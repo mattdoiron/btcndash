@@ -262,6 +262,7 @@ class Worker(object):
     """Creates the worker thread, which refreshes the page cache"""
 
     def __init__(self):
+        """Immediately refresh the cache"""
         self.refreshCache(0)
 
     def interrupt(self):
@@ -327,10 +328,18 @@ def error():
 
 if __name__ == '__main__':
 
+    # Make sure the html cache folder is present
+    html_path = os.path.join(APP_ROOT, 'static', 'html')        
+    try:
+        os.makedirs(html_path)
+    except OSError as expt:
+        if expt.errno != errno.EEXIST:
+            raise
+
     # Create a global thread for the worker
     workerThread = threading.Thread()
 
-    # Start the worker thread
+    # Start the worker thread (this also creates the first cache)
     Worker()
 
     # Starts the Bottle server with the specified settings

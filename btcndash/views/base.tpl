@@ -38,7 +38,7 @@
       	<div class="container">
       		<div class="row">
       			<div class="col-sm-12 col-lg-12">
-          			<p>BTCnDash: Bitcoin Node Dashboard - Copyright 2014</p>
+          			<p><a href="https://bitbucket.org/mattdoiron/btcndash">BTCnDash</a>: Bitcoin Node Dashboard - Copyright 2014</p>
           			<p>Donate to: <a href='https://blockchain.info/address/{{data['donate']}}'>{{data['donate']}}</a></p>
       		    </div>
       		</div><!-- /row -->
