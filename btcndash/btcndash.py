@@ -19,7 +19,8 @@ along with BTCnDash. If not, see <http://www.gnu.org/licenses/>.
 """
 
 """
-BTCnDash: Script to display status dashboard of a full Bitcoin node
+BTCnDash: Python script to generate and server status dashboard
+of a full Bitcoin node
 
 Acknowledgments:
  * Bottle: python web framework (http://bottlepy.org)

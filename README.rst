@@ -2,7 +2,7 @@
 BTCnDash
 ========
 
-BTCnDash: Script to display status dashboard of a full Bitcoin node
+BTCnDash: Python script to generate and server status dashboard of a full Bitcoin node
 
 A web-based dashboard displaying information about a full bitcoin node such as current connections to the server, recent transactions forwarded, bandwidth usage, and network stats like hash rate. Most items are generated automatically or retrieved from the bitcoind server itself via RPC calls.
 
