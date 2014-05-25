@@ -12,7 +12,7 @@ To launch the dashboard, all that is required is something like
 
     python btcndash.py
 
-Or you can use one of the example scripts in the scripts folder to start BTCnDash as a daemon.
+Or you can use one of the example scripts in the scripts folder to start BTCnDash as a daemon. You will need to create a non-root user to use the scripts.
 
 The css is a bit of a mess and bloated for my purposes, but I hope to trim it down and clean it up as I go.
 
