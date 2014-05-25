@@ -4,9 +4,9 @@ BTCnDash
 
 BTCnDash: Script to display status dashboard of a full Bitcoin node
 
-.. sectnum::
-
 .. contents:: Table of contents
+
+.. image:: btcndash_screenshot.png
 
 RPC and Bitcoin Node Settings
 =============================
