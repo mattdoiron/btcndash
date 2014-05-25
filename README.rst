@@ -8,6 +8,13 @@ A web-based dashboard displaying information about a full bitcoin node such as c
 
 BTCnDash is meant to be lightweight, and with the assumption that there will be very low traffic to the dashboard. As such, it does not use a full webserver like Nginx or apache. It uses the Bottle microframework and generates static status pages on a schedule. CherryPy's server is used as the actuall webserver, but Bottle (and therefore BTCnDash) can be served by lots of different servers.
 
+To launch the dashboard, all that is required is something like
+
+.. code-block:: python
+python btcndash.py
+
+Or you can use one of the example scripts in the scripts folder to start BTCnDash as a daemon.
+
 The css is a bit of a mess and bloated for my purposes, but I hope to trim it down and clean it up as I go.
 
 Hope you find it useful! If so, please consider donating Bitcoin to 1AHT2Zq7JneADw94M8uCdKRrqVZfhrTBYM
