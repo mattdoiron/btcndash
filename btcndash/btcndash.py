@@ -237,7 +237,7 @@ class PageCache(object):
 
         # Check if last modified time is > CACHE_TIME_LOC seconds ago
         if now - modified >= CACHE_TIME_LOC or not modified:
-            
+
             # Refresh location and ip before checking other pages
             self.cache_loc()
 
@@ -330,11 +330,11 @@ if __name__ == '__main__':
 
     # Make sure the html cache folder is present
     import errno
-    html_path = os.path.join(APP_ROOT, 'static', 'html')        
+    html_path = os.path.join(APP_ROOT, 'static', 'html')
     try:
         os.makedirs(html_path)
-    except OSError as expt:
-        if expt.errno != errno.EEXIST:
+    except OSError as e:
+        if e.errno != errno.EEXIST:
             raise
 
     # Create a global thread for the worker
