@@ -164,6 +164,10 @@ class PageCache(object):
         except JSONRPCException as e:
             print 'Error ({}): {}'.format(e.error['code'], e.error['message'])
             return False
+        except ValueError as e:
+            if e.message == "No JSON object could be decoded":
+                raise ValueError('No JSON in response. Be sure you entered \
+                                 the correct username and password')
 
         # Collect, format and return the required data in a dict
         return {'cons': info['connections'],
@@ -198,6 +202,10 @@ class PageCache(object):
         except JSONRPCException as e:
             print 'Error ({}): {}'.format(e.error['code'], e.error['message'])
             return False
+        except ValueError as e:
+            if e.message == "No JSON object could be decoded":
+                raise ValueError('No JSON in response. Be sure you entered \
+                                 the correct username and password')
 
         # Collect, format and return the required data in a dict
         return {'peers': peers,
@@ -215,6 +223,10 @@ class PageCache(object):
         except JSONRPCException as e:
             print 'Error ({}): {}'.format(e.error['code'], e.error['message'])
             return False
+        except ValueError as e:
+            if e.message == "No JSON object could be decoded":
+                raise ValueError('No JSON in response. Be sure you entered \
+                                 the correct username and password')
 
         # Collect, format and return the required data in a dict
         return {'transactions': tx,
