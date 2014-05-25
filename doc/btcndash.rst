@@ -6,10 +6,10 @@ BTCnDash: Script to display status dashboard of a full Bitcoin node
 
 .. sectnum::
 
-.. contents:: The tiny table of contents
+.. contents:: Table of contents
 
 RPC and Bitcoin Node Settings
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=============================
 
 RPC_UNAME
     RPC username. Used to log into the bitcoind RPC server, which must be endabled.
@@ -23,7 +23,7 @@ NODE_PORT
     The port on which the bitcoind daemon is listening for bitcoin protocol requests. This is used for informational purposes only.
 
 General settings
-~~~~~~~~~~~~~~~~
+================
 
 DONATE_ADDRESS
     Bitocoin address to which donations can be sent for this bitcoin node server. This will be displayed on the dashboard and used to automatically generate a qr code.
@@ -33,7 +33,7 @@ CACHE_TIME_LOC
     How often, in seconds, the IP address and location will be refreshed. This is done by a background task. It is separe from the other page cache becaues it should rarely change so should have a much longer refresh time.
 
 Local Server Settings
-~~~~~~~~~~~~~~~~~~~~~
+=====================
 
 SERVER_IP_LOCAL
     The local, internal IP address of the server running BTCnDash. Used by the Bottle framework to decide which IP to listen on.
@@ -53,7 +53,7 @@ PAGES
     Stores the location of the static files to be serves as well as the name of the template to use when creating them.
 
 External API settings
-~~~~~~~~~~~~~~~~~~~~~
+=====================
 
 QR_URL
     Address to use for generating qr codes
