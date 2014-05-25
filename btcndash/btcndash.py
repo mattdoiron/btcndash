@@ -329,6 +329,7 @@ def error():
 if __name__ == '__main__':
 
     # Make sure the html cache folder is present
+    import errno
     html_path = os.path.join(APP_ROOT, 'static', 'html')        
     try:
         os.makedirs(html_path)
