@@ -5,6 +5,8 @@ syntax: glob
 backups/
 static/html/
 .DS_Store
+venv/
+log/
 
 # Temp files
 *~
