@@ -316,8 +316,9 @@ def static(filename):
 
 
 @app.error(404)
-def error(page=None):
-    return "Error 404: Can't find resource! Try again in a few minutes."
+def error():
+    path = os.path.join('static', 'html', PAGES['404']['static'])
+    return static_file(path, root=APP_ROOT)
 
 # ----------------------------------------------------
 # Start your engines!
