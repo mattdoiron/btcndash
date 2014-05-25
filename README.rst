@@ -10,8 +10,7 @@ BTCnDash is meant to be lightweight, and with the assumption that there will be 
 
 To launch the dashboard, all that is required is something like
 
-::
-python btcndash.py
+    python btcndash.py
 
 Or you can use one of the example scripts in the scripts folder to start BTCnDash as a daemon.
 
