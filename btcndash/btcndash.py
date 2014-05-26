@@ -316,8 +316,8 @@ app = Bottle()
 # ----------------------------------------------------
 
 @app.route('/')
-@app.route('/<page>')
-@app.route('/<page>/')
+@app.route('/<_page>')
+@app.route('/<_page>/')
 def index(_page=None):
     """Default route to display cached status pages."""
     page_dict = PAGES.get(_page or 'index', PAGES['404'])
@@ -338,7 +338,7 @@ def static(filename):
 
 
 @app.error(404)
-def error():
+def error(page=None):
     path = os.path.join('static', 'html', PAGES['404']['static'])
     return static_file(path, root=APP_ROOT)
 
