@@ -146,7 +146,8 @@ class PageCache(object):
 
     def cache_404(self):
         """Creates a static 404 page"""
-        return dict()
+        return {'title': 'BTCnDash: Error 404 - Page not found',
+                'donate': DONATE_ADDRESS}
 
     def cache_index(self):
         """Takes care of getting and caching the index page."""
@@ -319,15 +320,15 @@ app = Bottle()
 @app.route('/<page>/')
 def index(_page=None):
     """Default route to display cached status pages."""
-    page_dict = PAGES.get(_page or '404', PAGES['404'])
+    page_dict = PAGES.get(_page or 'index', PAGES['404'])
     path = os.path.join('static', 'html', page_dict['static'])
     return static_file(path, root=APP_ROOT)
 
 
-@app.route('/favicon.ico')
+@app.route('favicon.ico')
 def favicon():
     path = os.path.join('static', 'img', 'favicon.ico')
-    return static_file(path, root=path)
+    return static_file(path, root=APP_ROOT)
 
 
 @app.route('/static/<filename:path>')
