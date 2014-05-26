@@ -317,10 +317,17 @@ app = Bottle()
 @app.route('/')
 @app.route('/<page>')
 @app.route('/<page>/')
-def index(page=None):
+def index(_page=None):
     """Default route to display cached status pages."""
-    path = os.path.join('static', 'html', PAGES[page or 'index']['static'])
+    page_dict = PAGES.get(_page or '404', PAGES['404'])
+    path = os.path.join('static', 'html', page_dict['static'])
     return static_file(path, root=APP_ROOT)
+
+
+@app.route('/favicon.ico')
+def favicon():
+    path = os.path.join('static', 'img', 'favicon.ico')
+    return static_file(path, root=path)
 
 
 @app.route('/static/<filename:path>')

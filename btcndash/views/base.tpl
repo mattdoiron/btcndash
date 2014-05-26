@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     
     <title>{{data['title'] or 'Bitcoin Node Status'}}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link href="static/css/bootstrap.css" rel="stylesheet">
-    <link href="static/css/main.css" rel="stylesheet">
-    <link href="static/css/font-style.css" rel="stylesheet">
+    <link href="static/css/bootstrap.css" rel="stylesheet" />
+    <link href="static/css/main.css" rel="stylesheet" />
+    <link href="static/css/font-style.css" rel="stylesheet" />
 	<script type="text/javascript" src="static/js/jquery.js"></script>
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -16,11 +16,11 @@
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <link rel="shortcut icon" href="static/img/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="static/img/favicon.ico" type="image/icon" />
 
   	<!-- Google Fonts call. Font Used Open Sans & Raleway -->
-	<link href="http://fonts.googleapis.com/css?family=Raleway:400,300" rel="stylesheet" type="text/css">
-  	<link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+	<link href="http://fonts.googleapis.com/css?family=Raleway:400,300" rel="stylesheet" type="text/css" />
+  	<link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css" />
     
 </head>
 <body>
