@@ -31,7 +31,6 @@ Create a new User
 
 It's a bad idead to run most anything as root so let's create a user just for BTCnDash.
 
-::
     sudo adduser --system --group btcndash
 
 Install Dependencies
@@ -39,7 +38,6 @@ Install Dependencies
 
 Various bits and pieces required by BTCnDash.
 
-::
     sudo apt-get install python-pip python-virtualenv
 
 Create virtualenv and Install Python requirements
@@ -47,7 +45,6 @@ Create virtualenv and Install Python requirements
 
 Technically, this step is optional, but it's highly recommended to ensure updates to other Python files/libraries later don't break BTCnDash.
 
-::
     cd /home/btcndash
     mkvirtualenv btcndash
     source btcndash/bin/activate
@@ -57,12 +54,10 @@ Get files for BTCnDash
 
 Download the latest version of BTCnDash
 
-::
     wget https://bitbucket.org/mattdoiron/btcndash/get/57542ca054d3.zip
     
 If you have mercurial installed you can also do:
 
-::
     hg clone https://bitbucket.org/mattdoiron/btcndash
     
 Install other requirements into virtualenv
@@ -70,7 +65,6 @@ Install other requirements into virtualenv
 
 Use pip to install the requirements as per the supplied requirements.txt file
 
-::
     pip install -r requirements.txt
     
 Configure bitcoind
@@ -88,7 +82,6 @@ Permisisons
 
 Use the following command to make sure the files that will be used by BTCnDash are owned by the user created in step one.
 
-::
     sudo chown -R btcndash:btcndash /path/to/virtualenv
 
 
@@ -102,11 +95,9 @@ Start it and test it
 
 Start BTCnDash with:
 
-::
     sudo start btcndash
     
 or
 
-::
     sudo service btcndash start
 
