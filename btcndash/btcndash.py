@@ -38,12 +38,11 @@ __title__ = "BTCnDash"
 __author__ = "Matt Doiron"
 __copyright__ = "Copyright 2014, Matt Doiron"
 __license__ = "GPL v3"
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __maintainer__ = "Matt Doiron"
 __email__ = "mattdoiron@gmail.com"
 __status__ = "Development"
 
-# TODO gracefully handle what happens if the node is offline
 # TODO save data transfered, uptime persistently
 # TODO test init scripts (both types init.d and upstart)
 # TODO clean up css files (lots of unused stuff)
@@ -59,6 +58,8 @@ import threading
 import atexit
 import urllib
 import json
+import errno
+from socket import error as socket_error
 
 from bottle import Bottle, template, static_file, TEMPLATE_PATH
 from bitcoinrpc.authproxy import AuthServiceProxy
@@ -107,7 +108,7 @@ BLOCK_HEIGHT_URL = 'https://blockchain.info/block-height/'
 IP_INFO_URL = 'https://blockchain.info/ip-address/'
 TX_INFO_URL = 'https://blockchain.info/tx/'
 HASH_DIFF_URL = 'https://bitcoinwisdom.com/bitcoin/difficulty'
-LOC_URL = 'http://freegeoip.net/json/'
+LOC_URL = 'http://ip-api.com/json/'
 MAP_URL = 'https://maps.google.com/maps?q={},{}&z=11'
 
 
@@ -134,12 +135,12 @@ class PageCache(object):
             global MAP_URL
             loc = json.loads(urllib.urlopen(LOC_URL).read())
             SERVER_LOCATION = ', '.join([loc['city'],
-                                         loc['region_code'],
-                                         loc['country_name']])
-            SERVER_IP_PUBLIC = loc['ip']
-            MAP_URL = MAP_URL.format(loc['latitude'], loc['longitude'])
-        except IOError as e:
-            print 'Error: {}'.format(e)
+                                         loc['region'],
+                                         loc['country']])
+            SERVER_IP_PUBLIC = loc['query']
+            MAP_URL = MAP_URL.format(loc['lat'], loc['lon'])
+        except (IOError, ValueError) as e:
+            print "Error: {}".format(e)
             SERVER_IP_PUBLIC = 'n/a'
             SERVER_LOCATION = 'Unknown'
             MAP_URL = '#'
@@ -169,6 +170,17 @@ class PageCache(object):
             if e.message == "No JSON object could be decoded":
                 raise ValueError('No JSON in response. Be sure you entered \
                                  the correct username and password')
+        except socket_error as e:
+            if e.errno != errno.ECONNREFUSED:
+                raise e
+
+            print "Unable to connect to Bitcoin RPC server: {}".format(e)
+            info = {'connections': None, 'blocks': 0, 'difficulty': 0, 'version': 'n/a'}
+            sent = 0
+            recv = 0
+            total = 0.0000001
+            hashrate = 0
+            transactions = []
 
         # Collect, format and return the required data in a dict
         return {'cons': info['connections'],
@@ -207,6 +219,12 @@ class PageCache(object):
             if e.message == "No JSON object could be decoded":
                 raise ValueError('No JSON in response. Be sure you entered \
                                  the correct username and password')
+        except socket_error as e:
+            if e.errno != errno.ECONNREFUSED:
+                raise e
+
+            print "Unable to connect to Bitcoin RPC server: {}".format(e)
+            peers = []
 
         # Collect, format and return the required data in a dict
         return {'peers': peers,
@@ -228,6 +246,12 @@ class PageCache(object):
             if e.message == "No JSON object could be decoded":
                 raise ValueError('No JSON in response. Be sure you entered \
                                  the correct username and password')
+        except socket_error as e:
+            if e.errno != errno.ECONNREFUSED:
+                raise e
+
+            print "Unable to connect to Bitcoin RPC server: {}".format(e)
+            tx = []
 
         # Collect, format and return the required data in a dict
         return {'transactions': tx,
@@ -349,7 +373,6 @@ def error(page=None):
 if __name__ == '__main__':
 
     # Make sure the html cache folder is present
-    import errno
     html_path = os.path.join(APP_ROOT, 'static', 'html')
     try:
         os.makedirs(html_path)
