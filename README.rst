@@ -33,4 +33,4 @@ Thanks to those who make great tools like these:
 * Blocks: bootstrap theme (http://alvarez.is/demo/free/blocks/)
 * CherryPy: btcndash uses the webserver from cherrypy (http://cherrypy.org/)
 
-.. image:: https://bitbucket.org/mattdoiron/idfplus/raw/default/doc/btcndash_screenshot.png
+.. image:: https://bitbucket.org/mattdoiron/btcndash/raw/default/doc/btcndash_screenshot.png
