@@ -6,7 +6,7 @@ BTCnDash: Python script to generate and server status dashboard of a full Bitcoi
 
 A web-based dashboard displaying information about a full bitcoin node such as current connections to the server, recent transactions forwarded, bandwidth usage, and network stats like hash rate. Most items are generated automatically or retrieved from the bitcoind server itself via RPC calls.
 
-BTCnDash is meant to be lightweight, and with the assumption that there will be very low traffic to the dashboard. As such, it does not use a full webserver like Nginx or apache. It uses the Bottle microframework and generates static status pages on a schedule. CherryPy's server is used as the actuall webserver, but Bottle (and therefore BTCnDash) can be served by lots of different servers.
+BTCnDash is meant to be lightweight, and with the assumption that there will be very low traffic to the dashboard. As such, it does not use a full webserver like Nginx or apache. It uses the Bottle microframework and generates static status pages on a schedule. CherryPy's server is used as the actuall webserver, but Bottle (and therefore BTCnDash) can be served by lots of different servers. Python 2.7 is required (2.6 and 3.x are not currently compatible).
 
 To launch the dashboard, all that is required is something like
 
@@ -33,4 +33,4 @@ Thanks to those who make great tools like these:
 * Blocks: bootstrap theme (http://alvarez.is/demo/free/blocks/)
 * CherryPy: btcndash uses the webserver from cherrypy (http://cherrypy.org/)
 
-.. image:: http://doc/btcndash_screenshot.png
+.. image:: https://bitbucket.org/mattdoiron/idfplus/raw/default/doc/btcndash_screenshot.png
