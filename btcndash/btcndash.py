@@ -171,7 +171,7 @@ class PageCache(object):
                 raise ValueError('No JSON in response. Be sure you entered \
                                  the correct username and password')
         except socket_error as e:
-            if e.errno != errno.ECONNREFUSED:
+            if e.errno not in [errno.ECONNREFUSED, errno.ETIMEDOUT]:
                 raise e
 
             print "Unable to connect to Bitcoin RPC server: {}".format(e)
@@ -220,7 +220,7 @@ class PageCache(object):
                 raise ValueError('No JSON in response. Be sure you entered \
                                  the correct username and password')
         except socket_error as e:
-            if e.errno != errno.ECONNREFUSED:
+            if e.errno not in [errno.ECONNREFUSED, errno.ETIMEDOUT]:
                 raise e
 
             print "Unable to connect to Bitcoin RPC server: {}".format(e)
@@ -247,7 +247,7 @@ class PageCache(object):
                 raise ValueError('No JSON in response. Be sure you entered \
                                  the correct username and password')
         except socket_error as e:
-            if e.errno != errno.ECONNREFUSED:
+            if e.errno not in [errno.ECONNREFUSED, errno.ETIMEDOUT]:
                 raise e
 
             print "Unable to connect to Bitcoin RPC server: {}".format(e)
