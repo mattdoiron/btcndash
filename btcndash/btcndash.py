@@ -177,8 +177,6 @@ class PageCache(object):
                 raise ValueError("No JSON in response. Be sure you entered the "
                                  "correct username and password")
         except socket_error as e:
-            if e.errno not in [errno.ECONNREFUSED, errno.ETIMEDOUT]:
-                raise e
             print "Unable to connect to Bitcoin RPC server: {}".format(e)
             info = {'connections': None, 'blocks': 0, 'difficulty': 0, 'version': 'n/a'}
             sent = 0
@@ -226,8 +224,6 @@ class PageCache(object):
                 raise ValueError("No JSON in response. Be sure you entered "
                                  "the correct username and password")
         except socket_error as e:
-            if e.errno not in [errno.ECONNREFUSED, errno.ETIMEDOUT]:
-                raise e
             print "Unable to connect to Bitcoin RPC server: {}".format(e)
             peers = []
 
@@ -253,8 +249,6 @@ class PageCache(object):
                 raise ValueError("No JSON in response. Be sure you entered "
                                  "the correct username and password")
         except socket_error as e:
-            if e.errno not in [errno.ECONNREFUSED, errno.ETIMEDOUT]:
-                raise e
             print "Unable to connect to Bitcoin RPC server: {}".format(e)
             tx = []
 
@@ -305,7 +299,7 @@ class Worker(object):
 
     def __init__(self):
         """Immediately refresh the cache"""
-        print('Launching worker...')
+        print 'Launching worker...'
         self.refresh_cache()
 
     @staticmethod
@@ -373,7 +367,7 @@ def error(page=None):
 
 if __name__ == '__main__':
 
-    print('Launching BTCnDash...')
+    print 'Launching BTCnDash...'
 
     # Make sure the html cache folder is present
     html_path = os.path.join(APP_ROOT, 'static', 'html')
@@ -394,4 +388,4 @@ if __name__ == '__main__':
         app.run(host=SERVER_IP_LOCAL, port=SERVER_PORT,
                 server=SERVER_TYPE, debug=DEBUG)
     except socket_error as e:
-        print('Unable to start server: {}'.format(e))
+        print 'Unable to start server: {}'.format(e)
