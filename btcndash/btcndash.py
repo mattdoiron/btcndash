@@ -344,6 +344,9 @@ app = Bottle()
 @app.route('/<_page>/')
 def index(_page=None):
     """Default route to display cached status pages."""
+    if _page == 'donate':
+        return DONATE_ADDRESS
+
     page_dict = PAGES.get(_page or 'index', PAGES['404'])
     path = os.path.join('static', 'html', page_dict['static'])
     return static_file(path, root=APP_ROOT)
