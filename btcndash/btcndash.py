@@ -31,7 +31,6 @@ Donate Bitcoin to 1AHT2Zq7JneADw94M8uCdKRrqVZfhrTBYM
 
 :copyright: (c) 2014 by Matt Doiron.
 :license: GPL v3, see LICENSE for more details.
-
 """
 
 __title__ = "BTCnDash"
@@ -43,9 +42,10 @@ __maintainer__ = "Matt Doiron"
 __email__ = "mattdoiron@gmail.com"
 __status__ = "Development"
 
-# TODO save data transfered, uptime persistently
+# TODO save data transferred, uptime persistently
 # TODO test init scripts (both types init.d and upstart)
 # TODO clean up css files (lots of unused stuff)
+# TODO refactor to reduce duplicate code
 
 
 # ----------------------------------------------------
@@ -70,26 +70,6 @@ from bitcoinrpc.authproxy import JSONRPCException
 # Constants
 # ----------------------------------------------------
 
-# RPC and Node settings
-RPC_UNAME = 'user1'
-RPC_PWORD = 'YOUR_LONG_PASSWORD_HERE'
-RPC_IP = '127.0.0.1'
-RPC_PORT = '8332'
-RPC_URN = "http://{}:{}@{}:{}".format(RPC_UNAME, RPC_PWORD, RPC_IP, RPC_PORT)
-NODE_PORT = '8333'
-
-# General settings
-DONATE_ADDRESS = '1AHT2Zq7JneADw94M8uCdKRrqVZfhrTBYM'
-CACHE_TIME = 300
-CACHE_TIME_LOC = 1800
-
-# Local server settings
-SERVER_IP_LOCAL = '192.168.2.x'
-SERVER_IP_PUBLIC = None
-SERVER_PORT = '8334'
-SERVER_TYPE = 'cherrypy'
-SERVER_LOCATION = None
-DEBUG = False
 APP_ROOT = os.path.dirname(os.path.realpath(__file__))
 TEMPLATE_PATH.insert(0, os.path.join(APP_ROOT, 'views'))
 PAGES = {'index': {'template': 'index.tpl',
@@ -101,15 +81,37 @@ PAGES = {'index': {'template': 'index.tpl',
          '404':   {'template': '404.tpl',
                    'static': '404.html'}}
 
+# ----------------------------------------------------
+# Create Bottle App and Load Configuration File
+# ----------------------------------------------------
+
+app = Bottle()
+app.config.load_config(os.path.join(APP_ROOT, 'btcndash.conf'))
+
+# RPC and Node settings
+RPC_URN = app.config['bitcoind.rpc_urn']
+NODE_PORT = app.config['bitcoind.node_port']
+
+# BTCnDash settings
+DONATE_ADDRESS = app.config['btcndash.donate_address']
+CACHE_TIME = int(app.config['btcndash.cache_time'])
+CACHE_TIME_LOC = int(app.config['btcndash.cache_time_location'])
+SERVER_IP_LOCAL = app.config['btcndash.ip_local']
+SERVER_IP_PUBLIC = app.config['btcndash.ip_public']
+SERVER_PORT = app.config['btcndash.port']
+SERVER_TYPE = app.config['btcndash.server_type']
+SERVER_LOCATION = app.config['btcndash.server_location']
+DEBUG = True if app.config['btcndash.debug'] == 'True' else False
+
 # External API settings
-QR_URL = 'https://chart.googleapis.com/chart'
-QR_PARAM = '?cht=qr&chs=186x186&chld=L|0&chl='
-BLOCK_HEIGHT_URL = 'https://blockchain.info/block-height/'
-IP_INFO_URL = 'https://blockchain.info/ip-address/'
-TX_INFO_URL = 'https://blockchain.info/tx/'
-HASH_DIFF_URL = 'https://bitcoinwisdom.com/bitcoin/difficulty'
-LOC_URL = 'http://ip-api.com/json/'
-MAP_URL = 'https://maps.google.com/maps?q={},{}&z=11'
+QR_URL = app.config['api.qr_url']
+QR_PARAM = app.config['api.qr_parameter']
+BLOCK_HEIGHT_URL = app.config['api.block_height_url']
+IP_INFO_URL = app.config['api.ip_info_url']
+TX_INFO_URL = app.config['api.tx_info_url']
+HASH_DIFF_URL = app.config['api.hash_diff_url']
+LOC_URL = app.config['api.location_url']
+MAP_URL = app.config['api.map_url']
 
 
 # ----------------------------------------------------
@@ -126,8 +128,10 @@ class PageCache(object):
         for page in PAGES.keys():
             self.cache_page(page)
 
-    def cache_loc(self):
+    @staticmethod
+    def cache_loc():
         """Cache location/IP separately because they should rarely change."""
+
         # Refresh IP and location
         try:
             global SERVER_IP_PUBLIC
@@ -145,12 +149,14 @@ class PageCache(object):
             SERVER_LOCATION = 'Unknown'
             MAP_URL = '#'
 
-    def cache_404(self):
+    @staticmethod
+    def cache_404():
         """Creates a static 404 page"""
         return {'title': 'BTCnDash: Error 404 - Page not found',
                 'donate': DONATE_ADDRESS}
 
-    def cache_index(self):
+    @staticmethod
+    def cache_index():
         """Takes care of getting and caching the index page."""
 
         # Get all the required data
@@ -168,12 +174,11 @@ class PageCache(object):
             return False
         except ValueError as e:
             if e.message == "No JSON object could be decoded":
-                raise ValueError('No JSON in response. Be sure you entered \
-                                 the correct username and password')
+                raise ValueError("No JSON in response. Be sure you entered the "
+                                 "correct username and password")
         except socket_error as e:
             if e.errno not in [errno.ECONNREFUSED, errno.ETIMEDOUT]:
                 raise e
-
             print "Unable to connect to Bitcoin RPC server: {}".format(e)
             info = {'connections': None, 'blocks': 0, 'difficulty': 0, 'version': 'n/a'}
             sent = 0
@@ -205,7 +210,8 @@ class PageCache(object):
                 'map_url': MAP_URL,
                 'hash_diff_url': HASH_DIFF_URL}
 
-    def cache_peers(self):
+    @staticmethod
+    def cache_peers():
         """Takes care of getting and caching the peers page."""
 
         # Get all the required data
@@ -217,12 +223,11 @@ class PageCache(object):
             return False
         except ValueError as e:
             if e.message == "No JSON object could be decoded":
-                raise ValueError('No JSON in response. Be sure you entered \
-                                 the correct username and password')
+                raise ValueError("No JSON in response. Be sure you entered "
+                                 "the correct username and password")
         except socket_error as e:
             if e.errno not in [errno.ECONNREFUSED, errno.ETIMEDOUT]:
                 raise e
-
             print "Unable to connect to Bitcoin RPC server: {}".format(e)
             peers = []
 
@@ -232,7 +237,8 @@ class PageCache(object):
                 'title': 'Bitcoin Node Status - Peers',
                 'donate': DONATE_ADDRESS}
 
-    def cache_tx(self):
+    @staticmethod
+    def cache_tx():
         """Takes care of getting and caching the transactions page."""
 
         # Get all the required data
@@ -244,12 +250,11 @@ class PageCache(object):
             return False
         except ValueError as e:
             if e.message == "No JSON object could be decoded":
-                raise ValueError('No JSON in response. Be sure you entered \
-                                 the correct username and password')
+                raise ValueError("No JSON in response. Be sure you entered "
+                                 "the correct username and password")
         except socket_error as e:
             if e.errno not in [errno.ECONNREFUSED, errno.ETIMEDOUT]:
                 raise e
-
             print "Unable to connect to Bitcoin RPC server: {}".format(e)
             tx = []
 
@@ -260,9 +265,9 @@ class PageCache(object):
                 'donate': DONATE_ADDRESS}
 
     def cache_page(self, _page):
-        """Gets and caches the specfied page."""
+        """Gets and caches the specified page."""
 
-        #Retrive the dictionary contianing info about the page
+        # Retrieve the dictionary containing info about the page
         page = PAGES.get(_page, 'index')
 
         # Find the last modified time of the STATIC_PAGE and the current time
@@ -287,8 +292,8 @@ class PageCache(object):
             # Open the static file and write the compiled template
             if data:
                 path = os.path.join(APP_ROOT, 'static', 'html', page['static'])
-                with open(path, 'wb') as file:
-                    file.write(template(page['template'], data=data))
+                with open(path, 'wb') as static_page:
+                    static_page.write(template(page['template'], data=data))
 
 
 # ----------------------------------------------------
@@ -300,39 +305,31 @@ class Worker(object):
 
     def __init__(self):
         """Immediately refresh the cache"""
-        self.refreshCache(0)
+        print('Launching worker...')
+        self.refresh_cache()
 
-    def interrupt(self):
-        global workerThread
-        workerThread.cancel()
+    @staticmethod
+    def interrupt():
+        global worker_thread
+        worker_thread.cancel()
 
-    def refreshCache(self, _cache_time=False):
-        global workerThread
-
-        if not _cache_time:
-            cache_time = CACHE_TIME
+    def refresh_cache(self):
+        global worker_thread
 
         # Call PageCache object to check cache freshness
         PageCache()
 
         try:
             # Set the next thread to start in cache_time seconds
-            workerThread = threading.Timer(cache_time, self.refreshCache, ())
-            workerThread.daemon = True
-            workerThread.start()
+            worker_thread = threading.Timer(CACHE_TIME, self.refresh_cache, ())
+            worker_thread.daemon = True
+            worker_thread.start()
 
             # When you kill Bottle (SIGTERM), clear the next timer
             atexit.register(self.interrupt)
 
         except (KeyboardInterrupt, SystemExit):
             self.interrupt()
-
-
-# ----------------------------------------------------
-# Create Bottle App
-# ----------------------------------------------------
-
-app = Bottle()
 
 
 # ----------------------------------------------------
@@ -369,11 +366,14 @@ def error(page=None):
     path = os.path.join('static', 'html', PAGES['404']['static'])
     return static_file(path, root=APP_ROOT)
 
+
 # ----------------------------------------------------
 # Start your engines!
 # ----------------------------------------------------
 
 if __name__ == '__main__':
+
+    print('Launching BTCnDash...')
 
     # Make sure the html cache folder is present
     html_path = os.path.join(APP_ROOT, 'static', 'html')
@@ -384,11 +384,14 @@ if __name__ == '__main__':
             raise
 
     # Create a global thread for the worker
-    workerThread = threading.Thread()
+    worker_thread = threading.Thread()
 
     # Start the worker thread (this also creates the first cache)
     Worker()
 
-    # Starts the Bottle server with the specified settings
-    app.run(host=SERVER_IP_LOCAL, port=SERVER_PORT,
-            server=SERVER_TYPE, debug=DEBUG)
+    try:
+        # Starts the Bottle server with the specified settings
+        app.run(host=SERVER_IP_LOCAL, port=SERVER_PORT,
+                server=SERVER_TYPE, debug=DEBUG)
+    except socket_error as e:
+        print('Unable to start server: {}'.format(e))
