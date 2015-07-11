@@ -112,6 +112,7 @@ TX_INFO_URL = app.config['api.tx_info_url']
 HASH_DIFF_URL = app.config['api.hash_diff_url']
 LOC_URL = app.config['api.location_url']
 MAP_URL = app.config['api.map_url']
+DONATE_URL = app.config['api.donate_url']
 
 
 # ----------------------------------------------------
@@ -153,7 +154,8 @@ class PageCache(object):
     def cache_404():
         """Creates a static 404 page"""
         return {'title': 'BTCnDash: Error 404 - Page not found',
-                'donate': DONATE_ADDRESS}
+                'donate': DONATE_ADDRESS,
+                'donate_url': DONATE_URL + DONATE_ADDRESS}
 
     @staticmethod
     def cache_index():
@@ -203,6 +205,7 @@ class PageCache(object):
                 'ip': ':'.join([SERVER_IP_PUBLIC, NODE_PORT]),
                 'loc': SERVER_LOCATION,
                 'donate': DONATE_ADDRESS,
+                'donate_url': DONATE_URL + DONATE_ADDRESS,
                 'qr_url': QR_URL + QR_PARAM + DONATE_ADDRESS,
                 'title': 'Bitcoin Node Status',
                 'map_url': MAP_URL,
@@ -231,7 +234,8 @@ class PageCache(object):
         return {'peers': peers,
                 'node_url': IP_INFO_URL,
                 'title': 'Bitcoin Node Status - Peers',
-                'donate': DONATE_ADDRESS}
+                'donate': DONATE_ADDRESS,
+                'donate_url': DONATE_URL + DONATE_ADDRESS}
 
     @staticmethod
     def cache_tx():
@@ -256,7 +260,8 @@ class PageCache(object):
         return {'transactions': tx,
                 'tx_url': TX_INFO_URL,
                 'title': 'Bitcoin Node Status - Transactions',
-                'donate': DONATE_ADDRESS}
+                'donate': DONATE_ADDRESS,
+                'donate_url': DONATE_URL + DONATE_ADDRESS}
 
     def cache_page(self, _page):
         """Gets and caches the specified page."""
