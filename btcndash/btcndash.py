@@ -169,7 +169,7 @@ class PageCache(object):
             sent = netinfo['totalbytessent']
             recv = netinfo['totalbytesrecv']
             total = sent + recv
-            hashrate = rpc.getnetworkhashps()
+            hashrate = float(rpc.getnetworkhashps())
             transactions = rpc.getrawmempool()
         except JSONRPCException as e:
             print 'Error ({}): {}'.format(e.error['code'], e.error['message'])
@@ -184,7 +184,7 @@ class PageCache(object):
             sent = 0
             recv = 0
             total = 0.0000001
-            hashrate = 0
+            hashrate = 0.0
             transactions = []
 
         # Collect, format and return the required data in a dict
