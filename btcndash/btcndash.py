@@ -61,9 +61,9 @@ import json
 import errno
 from socket import error as socket_error
 
+import bitcoin.rpc as rpc
+from bitcoin.rpc import JSONRPCException
 from bottle import Bottle, template, static_file, TEMPLATE_PATH
-from bitcoinrpc.authproxy import AuthServiceProxy
-from bitcoinrpc.authproxy import JSONRPCException
 
 
 # ----------------------------------------------------
@@ -163,14 +163,14 @@ class PageCache(object):
 
         # Get all the required data
         try:
-            rpc = AuthServiceProxy(RPC_URN)
-            info = rpc.getinfo()
-            netinfo = rpc.getnettotals()
+            con = rpc.Proxy(service_url=RPC_URN)
+            info = con.call('getinfo')
+            netinfo = con.call('getnettotals')
             sent = netinfo['totalbytessent']
             recv = netinfo['totalbytesrecv']
             total = sent + recv
-            hashrate = float(rpc.getnetworkhashps())
-            transactions = rpc.getrawmempool()
+            hashrate = float(con.call('getnetworkhashps'))
+            transactions = con.call('getrawmempool')
         except JSONRPCException as e:
             print 'Error ({}): {}'.format(e.error['code'], e.error['message'])
             return False
@@ -217,8 +217,8 @@ class PageCache(object):
 
         # Get all the required data
         try:
-            rpc = AuthServiceProxy(RPC_URN)
-            peers = rpc.getpeerinfo()
+            con = rpc.Proxy(service_url=RPC_URN)
+            peers = con.call('getpeerinfo')
         except JSONRPCException as e:
             print 'Error ({}): {}'.format(e.error['code'], e.error['message'])
             return False
@@ -243,8 +243,8 @@ class PageCache(object):
 
         # Get all the required data
         try:
-            rpc = AuthServiceProxy(RPC_URN)
-            tx = rpc.getrawmempool()
+            con = rpc.Proxy(service_url=RPC_URN)
+            tx = con.call('getrawmempool')
         except JSONRPCException as e:
             print 'Error ({}): {}'.format(e.error['code'], e.error['message'])
             return False

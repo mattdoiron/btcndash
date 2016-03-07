@@ -1,4 +1,4 @@
 CherryPy==3.6.0
 bottle==0.12.8
-python-bitcoinrpc==0.1
+python-bitcoinlib==0.5.1
 wsgiref==0.1.2
