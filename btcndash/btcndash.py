@@ -60,6 +60,7 @@ import urllib
 import json
 import errno
 from socket import error as socket_error
+import logging
 
 import bitcoin.rpc as rpc
 from bitcoin.rpc import JSONRPCException
@@ -68,12 +69,13 @@ import config
 
 
 # ----------------------------------------------------
-# Create Bottle App and Set Templates Dir
+# Create Bottle App and Do Initial Setup
 # ----------------------------------------------------
 
 app = Bottle()
 APP_ROOT = os.path.dirname(os.path.realpath(__file__))
 TEMPLATE_PATH.insert(0, os.path.join(APP_ROOT, 'views'))
+log = logging.getLogger('BTCnDash')
 
 
 # ----------------------------------------------------
@@ -101,7 +103,7 @@ class PageCache(object):
             config.SERVER_IP_PUBLIC = loc['query']
             config.MAP_URL = config.MAP_URL.format(loc['lat'], loc['lon'])
         except (IOError, ValueError) as e:
-            print "Error: {}".format(e)
+            log.error("Error: {}".format(e))
             config.SERVER_IP_PUBLIC = 'n/a'
             config.SERVER_LOCATION = 'Unknown'
             config.MAP_URL = '#'
@@ -128,14 +130,14 @@ class PageCache(object):
             hashrate = float(con.call('getnetworkhashps'))
             transactions = con.call('getrawmempool')
         except JSONRPCException as e:
-            print 'Error ({}): {}'.format(e.error['code'], e.error['message'])
+            log.error("Error ({}): {}".format(e.error['code'], e.error['message']))
             return False
         except ValueError as e:
             if e.message == "No JSON object could be decoded":
                 raise ValueError("No JSON in response. Be sure you entered the "
                                  "correct username and password")
         except socket_error as e:
-            print "Unable to connect to Bitcoin RPC server: {}".format(e)
+            log.error("Unable to connect to Bitcoin RPC server: {}".format(e))
             info = {'connections': None, 'blocks': 0, 'difficulty': 0, 'version': 'n/a'}
             sent = 0
             recv = 0
@@ -176,14 +178,14 @@ class PageCache(object):
             con = rpc.Proxy(service_url=config.RPC_URN)
             peers = con.call('getpeerinfo')
         except JSONRPCException as e:
-            print 'Error ({}): {}'.format(e.error['code'], e.error['message'])
+            log.error("Error ({}): {}".format(e.error['code'], e.error['message']))
             return False
         except ValueError as e:
             if e.message == "No JSON object could be decoded":
                 raise ValueError("No JSON in response. Be sure you entered "
                                  "the correct username and password")
         except socket_error as e:
-            print "Unable to connect to Bitcoin RPC server: {}".format(e)
+            log.error("Unable to connect to Bitcoin RPC server: {}".format(e))
             peers = []
 
         # Collect, format and return the required data in a dict
@@ -202,14 +204,14 @@ class PageCache(object):
             con = rpc.Proxy(service_url=config.RPC_URN)
             tx = con.call('getrawmempool')
         except JSONRPCException as e:
-            print 'Error ({}): {}'.format(e.error['code'], e.error['message'])
+            log.error("Error ({}): {}".format(e.error['code'], e.error['message']))
             return False
         except ValueError as e:
             if e.message == "No JSON object could be decoded":
                 raise ValueError("No JSON in response. Be sure you entered "
                                  "the correct username and password")
         except socket_error as e:
-            print "Unable to connect to Bitcoin RPC server: {}".format(e)
+            log.error("Unable to connect to Bitcoin RPC server: {}".format(e))
             tx = []
 
         # Collect, format and return the required data in a dict
@@ -260,7 +262,7 @@ class Worker(object):
 
     def __init__(self):
         """Immediately refresh the cache"""
-        print 'Launching worker...'
+        log.info('Launching worker...')
         self.refresh_cache()
 
     @staticmethod
@@ -328,7 +330,7 @@ def error(page=None):
 
 if __name__ == '__main__':
 
-    print 'Launching BTCnDash...'
+    log.info('Launching BTCnDash...')
 
     # Make sure the html cache folder is present
     html_path = os.path.join(APP_ROOT, 'static', 'html')
@@ -349,4 +351,4 @@ if __name__ == '__main__':
         app.run(host=config.SERVER_IP_LOCAL, port=config.SERVER_PORT,
                 server=config.SERVER_TYPE, debug=config.DEBUG)
     except socket_error as e:
-        print 'Unable to start server: {}'.format(e)
+        log.error('Unable to start server: {}'.format(e))
