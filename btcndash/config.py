@@ -11,15 +11,22 @@ SERVER_IP_PUBLIC = "detect"
 SERVER_PORT = 8334
 SERVER_TYPE = "cherrypy"
 SERVER_LOCATION = "detect"
+SERVER_LATITUDE = "detect"
+SERVER_LONGITUDE = "detect"
 DEBUG = False
-PAGES = {'index': {'template': 'index.tpl',
-                   'static': 'index.html'},
-         'peers': {'template': 'peers.tpl',
-                   'static': 'peers.html'},
-         'tx':    {'template': 'tx.tpl',
-                   'static': 'tx.html'},
-         '404':   {'template': '404.tpl',
-                   'static': '404.html'}}
+LOG_LEVEL = 'INFO'
+PAGES = {'index': {'template': "index.tpl",
+                   'static': "index.html",
+                   'title': "Bitcoin Node Status"},
+         'peers': {'template': "peers.tpl",
+                   'static': "peers.html",
+                   'title': "Bitcoin Node Status - Peers"},
+         'tx':    {'template': "tx.tpl",
+                   'static': "tx.html",
+                   'title': "Bitcoin Node Status - Transactions"},
+         '404':   {'template': "404.tpl",
+                   'static': "404.html",
+                   'title': "Bitcoin Node Status - Page Not Found"}}
 
 # API Settings
 QR_URL = "https://chart.googleapis.com/chart"
@@ -31,3 +38,11 @@ HASH_DIFF_URL = "https://bitcoinwisdom.com/bitcoin/difficulty"
 LOC_URL = "http://ip-api.com/json/"
 MAP_URL = "https://maps.google.com/maps?q={},{}&z=11"
 DONATE_URL = "https://blockchain.info/address/"
+
+# Dash Block Registry
+DASH_BLOCK_REGISTRY = {
+    'index': {'rpc_commands': ["getinfo", "getnettotals", "getnetworkhashps", "getrawmempool"]},
+    'peers': {'rpc_commands': ["getpeerinfo"]},
+    'tx':    {'rpc_commands': ["getrawmempool"]},
+    '404':   {'rpc_commands': ["getinfo"]}
+}
