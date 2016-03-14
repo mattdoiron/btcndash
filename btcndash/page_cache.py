@@ -48,6 +48,7 @@ class PageCache(object):
         self.con = rpc.Proxy(service_url=config.RPC_URN)
 
         # Generate and cache all pages
+        self.cache_loc()
         self.cache_pages()
 
     def cache_loc(self):
