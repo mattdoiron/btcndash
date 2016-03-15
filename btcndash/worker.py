@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """"
-Copyright (c) 2014. All rights reserved.
+Copyright (c) 2014, Matt Doiron. All rights reserved.
 
 BTCnDash is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -26,14 +26,14 @@ import atexit
 import config
 import page_cache
 import logger
+
 log = logger.setup_logging(config.LOG_LEVEL, __name__)
 
 
 class Worker(object):
-    """Creates the worker thread, which refreshes the page cache"""
+    """Creates the worker thread, which refreshes the page cache."""
 
     def __init__(self):
-        """Immediately refresh the cache"""
         log.info('Launching worker...')
         self.worker_thread = threading.Thread()
         self.refresh_cache()

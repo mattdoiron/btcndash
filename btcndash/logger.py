@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """"
-Copyright (c) 2014. All rights reserved.
+Copyright (c) 2014, Matt Doiron. All rights reserved.
 
 BTCnDash is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -27,8 +27,8 @@ def setup_logging(_level, name):
     """Sets up and configures the logger
 
     :rtype: logging.logger
-    :param _level:
-    :param name:
+    :param _level: Log level such as WARN, ERROR, INFO
+    :param name: Name of root logger
     """
 
     # Setup log level, path and formatters

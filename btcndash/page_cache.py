@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """"
-Copyright (c) 2014. All rights reserved.
+Copyright (c) 2014, Matt Doiron. All rights reserved.
 
 BTCnDash is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ APP_ROOT = os.path.dirname(os.path.realpath(__file__))
 
 
 class PageCache(object):
-    """Takes care of getting and caching pages of different types."""
+    """Retrieves data from bitcoind via RPC and generates static, cached pages."""
 
     def __init__(self):
         self.location = {}
@@ -88,6 +88,8 @@ class PageCache(object):
 
     @staticmethod
     def _condense_commands():
+        """Creates a set of unique rpc commands to be executed."""
+
         # Create a set of blocks that will need data
         blocks = []
         for page_info in config.PAGES.values():
@@ -105,6 +107,7 @@ class PageCache(object):
         return command_set
 
     def _get_raw_data(self):
+        """Retrieve and combine raw data from the RPC server."""
 
         commands = self._condense_commands()
         data = {}
@@ -133,14 +136,15 @@ class PageCache(object):
         return data
 
     def get_data(self):
+        """Gets data and processes it into the format required for the templates."""
 
         raw_data = self._get_raw_data()
         data = {}
 
         try:
             sent = raw_data['totalbytessent']
-            recv = raw_data['totalbytesrecv']
-            total = sent + recv
+            received = raw_data['totalbytesrecv']
+            total = sent + received
             data = {
                 'cons': raw_data['connections'],
                 'hashrate': '{:,.1f}'.format(float(raw_data['networkhashps']) / 1.0E12),
@@ -149,9 +153,9 @@ class PageCache(object):
                 'diff': '{:,.2f}'.format(raw_data['difficulty']),
                 'version': raw_data['version'],
                 'sent': '{:,.1f}'.format(sent / 1048576.0),
-                'recv': '{:,.1f}'.format(recv / 1048576.0),
+                'recv': '{:,.1f}'.format(received / 1048576.0),
                 'total': '{:,.3f}'.format(total / 1073741824.0),
-                'pcnt_in': '{:,.1f}'.format(recv / float(total) * 100.0),
+                'pcnt_in': '{:,.1f}'.format(received / float(total) * 100.0),
                 'pcnt_out': '{:,.1f}'.format(sent / float(total) * 100.0),
                 'tx_count': '{:,}'.format(len(raw_data['rawmempool'])),
                 'update': time.strftime("%Y-%m-%d %H:%M:%S"),
@@ -175,7 +179,7 @@ class PageCache(object):
         return data
 
     def cache_pages(self):
-        """Gets and caches the specified page."""
+        """Creates and caches all pages depending on the age of any existing files."""
 
         log.info('Caching pages...')
         now = time.time()

@@ -15,6 +15,8 @@ SERVER_LATITUDE = "detect"
 SERVER_LONGITUDE = "detect"
 DEBUG = False
 LOG_LEVEL = 'INFO'
+
+# Registry of pages and info about them such as which blocks to include.
 PAGES = {
     'index': {'template': "index.tpl",
               'static': "index.html",
@@ -36,6 +38,7 @@ PAGES = {
 }
 
 # API Settings
+# Select your preferred services here and customize the parameters if required.
 QR_URL = "https://chart.googleapis.com/chart"
 QR_PARAM = "?cht=qr&chs=186x186&chld=L|0&chl="
 BLOCK_HEIGHT_URL = "https://blockchain.info/block-height/"
@@ -46,7 +49,8 @@ LOC_URL = "http://ip-api.com/json/"
 MAP_URL = "https://maps.google.com/maps?q={},{}&z=11"
 DONATE_URL = "https://blockchain.info/address/"
 
-# Dash Block Registry (RPC commands required for the given block)
+# Registry of 'tiles' and the RPC commands required to populate them with data.
+# Do NOT change these unless you're creating custom tiles!
 TILES = {
     'general':           {'rpc_commands': []},
     'connections':       {'rpc_commands': ['getinfo']},

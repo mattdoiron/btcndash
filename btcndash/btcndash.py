@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """"
-Copyright (c) 2014. All rights reserved.
+Copyright (c) 2014, Matt Doiron. All rights reserved.
 
 BTCnDash is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ of a full Bitcoin node
 Acknowledgments:
  * Bottle: python web framework (http://bottlepy.org)
  * bitcoinlib: rpc library (https://github.com/petertodd/python-bitcoinlib/)
- * Blocks: bootstrap theme (http://alvarez.is/demo/free/blocks/)
+ * Blocks: bootstrap theme (http://alvarez.is/)
 
 Donate Bitcoin to 1AHT2Zq7JneADw94M8uCdKRrqVZfhrTBYM
 
@@ -41,11 +41,6 @@ __version__ = "0.1.1"
 __maintainer__ = "Matt Doiron"
 __email__ = "mattdoiron@gmail.com"
 __status__ = "Development"
-
-# TODO save data transferred, uptime persistently
-# TODO test init scripts (both types init.d and upstart)
-# TODO clean up css files (lots of unused stuff)
-# TODO refactor to reduce duplicate code
 
 
 # ----------------------------------------------------
@@ -104,7 +99,6 @@ def static(filename):
 def error(page=None):
     path = os.path.join('static', 'html', config.PAGES['404']['static'])
     return static_file(path, root=APP_ROOT)
-
 
 # ----------------------------------------------------
 # Start your engines!
