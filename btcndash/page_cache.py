@@ -80,16 +80,26 @@ class PageCache(object):
             self.location['lon'] = '0'
 
     @staticmethod
-    def _condense_commands(page_registry):
+    def _condense_commands():
+        # Create a set of blocks that will need data
+        blocks = []
+        for page_info in config.PAGES.values():
+            for block in page_info['blocks']:
+                blocks.extend(block)
+        block_set = set(blocks)
+
+        # Use the set of blocks to create a set of rpc commands required
         commands = []
-        for page, val in page_registry.iteritems():
-            commands.extend(val['rpc_commands'])
+        for block in block_set:
+            rpc_commands = config.DASH_BLOCK_REGISTRY[block]['rpc_commands']
+            for command in rpc_commands:
+                commands.append(command)
         command_set = set(commands)
         return command_set
 
-    def _get_raw_data(self, page_registry):
+    def _get_raw_data(self):
 
-        commands = self._condense_commands(page_registry)
+        commands = self._condense_commands()
         data = {}
 
         log.info('Retrieving data from bitcoind via RPC...')
@@ -112,9 +122,9 @@ class PageCache(object):
 
         return data
 
-    def get_data(self, page_registry):
+    def get_data(self):
 
-        raw_data = self._get_raw_data(page_registry)
+        raw_data = self._get_raw_data()
         data = {}
 
         try:
@@ -160,7 +170,6 @@ class PageCache(object):
         log.info('Caching pages...')
         now = time.time()
         pages = config.PAGES
-        dash_blocks = config.DASH_BLOCK_REGISTRY
         path = os.path.join(APP_ROOT, 'static', 'html', pages['index']['static'])
 
         # Find the last modified time of the index page and the current time
@@ -179,7 +188,7 @@ class PageCache(object):
         if now - modified >= config.CACHE_TIME or not modified:
 
             # Retrieve data for use in templates
-            data = self.get_data(dash_blocks)
+            data = self.get_data()
             if not data:
                 log.error('No data was retrieved. Pages will not be generated.')
                 return
