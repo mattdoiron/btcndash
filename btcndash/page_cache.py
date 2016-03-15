@@ -212,5 +212,6 @@ class PageCache(object):
                 path = os.path.join(APP_ROOT, 'static', 'html', page_info['static'])
                 data['title'] = page_info['title']
                 with open(path, 'wb') as static_page:
-                    static_page.write(template(page_info['template'], data=data))
                     log.info('Writing static page cache for: {}'.format(page_info['static']))
+                    static_page.write(template(page_info['template'], data=data,
+                                               page_info=page_info, tiles=config.TILES))

@@ -52,13 +52,22 @@ DONATE_URL = "https://blockchain.info/address/"
 # Registry of 'tiles' and the RPC commands required to populate them with data.
 # Do NOT change these unless you're creating custom tiles!
 TILES = {
-    'general':           {'rpc_commands': []},
-    'connections':       {'rpc_commands': ['getinfo']},
-    'bandwidth':         {'rpc_commands': ['getnettotals']},
-    'bandwidth_summary': {'rpc_commands': ['getnettotals']},
-    'network':           {'rpc_commands': ['getnetworkhashps']},
-    'donate':            {'rpc_commands': []},
-    'peers':             {'rpc_commands': ["getpeerinfo"]},
-    'tx':                {'rpc_commands': ["getrawmempool"]},
-    '404':               {'rpc_commands': []}
+    'general':           {'template': "general.tpl",
+                          'rpc_commands': []},
+    'connections':       {'template': "connections.tpl",
+                          'rpc_commands': ['getinfo']},
+    'bandwidth':         {'template': "bandwidth.tpl",
+                          'rpc_commands': ['getnettotals']},
+    'bandwidth_summary': {'template': "bandwidth_summary.tpl",
+                          'rpc_commands': ['getnettotals']},
+    'network':           {'template': "network.tpl",
+                          'rpc_commands': ['getnetworkhashps']},
+    'donate':            {'template': "donate.tpl",
+                          'rpc_commands': []},
+    'peers':             {'template': "peers.tpl",
+                          'rpc_commands': ["getpeerinfo"]},
+    'tx':                {'template': "tx.tpl",
+                          'rpc_commands': ["getrawmempool"]},
+    '404':               {'template': "404.tpl",
+                          'rpc_commands': []}
 }

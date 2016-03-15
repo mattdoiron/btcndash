@@ -41,16 +41,12 @@
     });
 </script>
 <div class="container">
-    <!-- FIRST ROW OF BLOCKS -->
-    <div class="row">
-        % include('general.tpl', data=data)
-        % include('connections.tpl', data=data)
-        % include('bandwidth.tpl', data=data)
-    </div><!-- /row -->
-    <!-- SECOND ROW OF BLOCKS -->
-    <div class="row">
-        % include('bandwidth_summary.tpl', data=data)
-        % include('network.tpl', data=data)
-        % include('donate.tpl', data=data)
-    </div><!-- /row -->
+    % for row in page_info['tiles']:
+        <!-- Start of row -->
+        <div class="row">
+            % for tile_name in row:
+                % include(tiles[tile_name]['template'], data=data)
+            % end
+        </div><!-- /row -->
+    % end
 </div> <!-- /container -->
