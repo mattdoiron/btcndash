@@ -91,16 +91,16 @@ class PageCache(object):
         """Creates a set of unique rpc commands to be executed."""
 
         # Create a set of blocks that will need data
-        blocks = []
+        tiles = []
         for page_info in config.PAGES.values():
-            for block in page_info['blocks']:
-                blocks.extend(block)
-        block_set = set(blocks)
+            for tile in page_info['tiles']:
+                tiles.extend(tile)
+        tile_set = set(tiles)
 
         # Use the set of blocks to create a set of rpc commands required
         commands = []
-        for block in block_set:
-            rpc_commands = config.TILES[block]['rpc_commands']
+        for tile in tile_set:
+            rpc_commands = config.TILES[tile]['rpc_commands']
             for command in rpc_commands:
                 commands.append(command)
         command_set = set(commands)
