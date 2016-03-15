@@ -21,13 +21,16 @@ along with BTCnDash. If not, see <http://www.gnu.org/licenses/>.
 # System Imports
 import time
 import os
-import urllib
 import json
 import errno
 from socket import error as socket_error
 from bottle import template
 import bitcoin.rpc as rpc
 from bitcoin.rpc import JSONRPCException
+try:
+    import urllib.request as urlrequest
+except ImportError:
+    import urllib as urlrequest
 
 # BTCnDash Imports
 import config
@@ -64,7 +67,7 @@ class PageCache(object):
         # Refresh IP and location
         try:
             if 'detect' in [config.SERVER_LOCATION, config.SERVER_IP_PUBLIC]:
-                loc = json.loads(urllib.urlopen(config.LOC_URL).read())
+                loc = json.loads(urlrequest.urlopen(config.LOC_URL).read().decode('utf-8'))
             if config.SERVER_LOCATION == 'detect':
                 log.info('Detecting server location and IP address...')
                 self.location['server_location'] = ', '.join([loc['city'], loc['region'],
@@ -208,11 +211,11 @@ class PageCache(object):
                 return
 
             # Open the static file for each page and write the compiled template
-            for page, page_info in pages.iteritems():
+            for page, page_info in pages.items():
                 path = os.path.join(APP_ROOT, 'static', 'html', page_info['static'])
                 data['title'] = page_info['title']
                 data['header_title'] = config.HEADER_TITLE
-                with open(path, 'wb') as static_page:
+                with open(path, 'w') as static_page:
                     log.info('Writing static page cache for: {}'.format(page_info['static']))
                     static_page.write(template(page_info['template'], data=data,
                                                page_info=page_info, tiles=config.TILES))
