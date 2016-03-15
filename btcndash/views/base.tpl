@@ -28,7 +28,7 @@
     <div class="navbar-nav navbar-inverse navbar-fixed-top">
         <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand" href="/"><img src="static/img/bitcoin_logo_qt.png" width="18" height="18" alt=""/> BTCnDash: Bitcoin Node Dashboard</a>
+          <a class="navbar-brand" href="/"><img src="static/img/bitcoin_logo_qt.png" width="18" height="18" alt=""/>{{data['header_title']}}</a>
         </div> 
         </div>
     </div>

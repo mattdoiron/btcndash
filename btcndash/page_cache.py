@@ -211,6 +211,7 @@ class PageCache(object):
             for page, page_info in pages.iteritems():
                 path = os.path.join(APP_ROOT, 'static', 'html', page_info['static'])
                 data['title'] = page_info['title']
+                data['header_title'] = config.HEADER_TITLE
                 with open(path, 'wb') as static_page:
                     log.info('Writing static page cache for: {}'.format(page_info['static']))
                     static_page.write(template(page_info['template'], data=data,
