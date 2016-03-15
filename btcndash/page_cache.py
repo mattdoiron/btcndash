@@ -91,7 +91,7 @@ class PageCache(object):
         # Use the set of blocks to create a set of rpc commands required
         commands = []
         for block in block_set:
-            rpc_commands = config.DASH_BLOCK_REGISTRY[block]['rpc_commands']
+            rpc_commands = config.TILES[block]['rpc_commands']
             for command in rpc_commands:
                 commands.append(command)
         command_set = set(commands)

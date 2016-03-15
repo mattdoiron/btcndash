@@ -47,7 +47,7 @@ MAP_URL = "https://maps.google.com/maps?q={},{}&z=11"
 DONATE_URL = "https://blockchain.info/address/"
 
 # Dash Block Registry (RPC commands required for the given block)
-DASH_BLOCK_REGISTRY = {
+TILES = {
     'general':           {'rpc_commands': []},
     'connections':       {'rpc_commands': ['getinfo']},
     'bandwidth':         {'rpc_commands': ['getnettotals']},
