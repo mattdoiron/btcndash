@@ -113,6 +113,9 @@ class PageCache(object):
             except socket_error as err:
                 log.error("Unable to connect to Bitcoin RPC server: {}".format(err))
                 return {}
+            except ValueError as err:
+                log.error("No response from server. Please verify your username and password!")
+                return {}
 
             # Check if we can use update directly or with a derived key name
             if isinstance(result, dict):
