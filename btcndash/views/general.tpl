@@ -7,7 +7,7 @@
             <span aria-hidden="true" class="li_display fs2"></span>
         </div>
         <br/>
-        <h1>Bitcoin Full Node</h1>
+        <h1>Bitcoin Node</h1>
         <h1>{{data['ip']}}</h1>
         <h3><a href='{{data['map_url']}}'>{{data['loc']}}</a></h3>
         <div class="cont">
