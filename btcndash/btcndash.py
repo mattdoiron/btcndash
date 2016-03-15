@@ -54,7 +54,6 @@ __status__ = "Development"
 
 # System Imports
 import os
-import errno
 from socket import error as socket_error
 from bottle import Bottle, static_file, TEMPLATE_PATH
 
@@ -114,14 +113,6 @@ def error(page=None):
 if __name__ == '__main__':
 
     log.info('Launching BTCnDash...')
-
-    # Make sure the html cache folder is present
-    html_path = os.path.join(APP_ROOT, 'static', 'html')
-    try:
-        os.makedirs(html_path)
-    except OSError as err:
-        if err.errno != errno.EEXIST:
-            raise
 
     # Start the worker thread (this also creates the first cache)
     worker = worker.Worker()

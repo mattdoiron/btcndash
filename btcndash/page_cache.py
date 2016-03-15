@@ -23,6 +23,7 @@ import time
 import os
 import urllib
 import json
+import errno
 from socket import error as socket_error
 from bottle import template
 import bitcoin.rpc as rpc
@@ -40,9 +41,15 @@ class PageCache(object):
     """Takes care of getting and caching pages of different types."""
 
     def __init__(self):
-        """Upon init, refresh cached pages"""
-
         self.location = {}
+
+        # Make sure the html cache folder is present
+        html_path = os.path.join(APP_ROOT, 'static', 'html')
+        try:
+            os.makedirs(html_path)
+        except OSError as err:
+            if err.errno != errno.EEXIST:
+                raise
 
         # Prepare the RPC connection to bitcoind
         self.con = rpc.Proxy(service_url=config.RPC_URN)
