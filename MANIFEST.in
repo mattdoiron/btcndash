@@ -1,0 +1,6 @@
+include *.txt
+include *.rst
+recursive-include doc *
+recursive-include scripts *
+recursive-include btcndash/static *
+recursive-include btcndash/views *
