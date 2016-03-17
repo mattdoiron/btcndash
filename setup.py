@@ -41,7 +41,7 @@ with open(os.path.join(project, '__init__.py'), 'r') as fd:
         raise RuntimeError('Cannot find version information')
 with open('README.rst', 'r', 'utf-8') as f:
     readme = f.read()
-with open('CHANGES.txt', 'r', 'utf-8') as f:
+with open('CHANGELOG.rst', 'r', 'utf-8') as f:
     changelog = f.read()
 
 
