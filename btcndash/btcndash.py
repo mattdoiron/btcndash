@@ -94,12 +94,13 @@ def error(page=None):
 # Start your engines!
 # ----------------------------------------------------
 
-if __name__ == '__main__':
+
+def main():
 
     log.info('Launching BTCnDash...')
 
     # Start the worker thread (this also creates the first cache)
-    worker = worker.Worker()
+    worker_class = worker.Worker()
 
     try:
         # Starts the Bottle server with the specified settings
@@ -107,3 +108,6 @@ if __name__ == '__main__':
                 server=config.SERVER_TYPE, debug=config.DEBUG)
     except socket_error as err:
         log.error('Unable to start server: {}'.format(err))
+
+if __name__ == '__main__':
+    main()
