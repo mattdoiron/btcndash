@@ -60,17 +60,16 @@ setup(
     license='GPL3',
     zip_safe=False,
     install_requires=requires,
+    include_package_data = True,
     classifiers=[
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.5',
         'Development Status :: 4 - Beta',
         'Natural Language :: English',
         'Environment :: Web Environment',
-        'Framework :: Bottle',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
-        'Operating System :: OS Independent',
-        'Topic :: Internet',
-        'Topic :: System :: Systems Administration',
-        'Topic :: Utilities'
-    ]
+    ],
+    entry_points={
+        'console_scripts': ['btcndash = btcndash.btcndash:main']
+    }
 )
