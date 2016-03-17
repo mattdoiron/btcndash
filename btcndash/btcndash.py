@@ -33,16 +33,6 @@ Donate Bitcoin to 1AHT2Zq7JneADw94M8uCdKRrqVZfhrTBYM
 :license: GPL v3, see LICENSE for more details.
 """
 
-__title__ = "BTCnDash"
-__author__ = "Matt Doiron"
-__copyright__ = "Copyright 2014, Matt Doiron"
-__license__ = "GPL v3"
-__version__ = "2.0.0"
-__maintainer__ = "Matt Doiron"
-__email__ = "mattdoiron@gmail.com"
-__status__ = "Development"
-
-
 # ----------------------------------------------------
 # Imports
 # ----------------------------------------------------
