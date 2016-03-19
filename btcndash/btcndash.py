@@ -57,6 +57,7 @@ import worker
 def process_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('config', nargs='?', default='config.json')
+    parser.add_argument('clearcache', action="store_true", help='testhelp')
     return parser.parse_known_args()
 
 # Parse command-line arguments
@@ -78,6 +79,19 @@ APP_ROOT = os.path.dirname(os.path.realpath(__file__))
 TEMPLATE_PATH.insert(0, os.path.join(APP_ROOT, 'views'))
 TEMPLATE_PATH.insert(0, config['alternate_views'])
 log = logger.setup_logging(config['log_level'], 'BTCnDash')
+
+# Process other command line arguments
+if parsed_args.clearcache:
+    log.info('Clearing cache...')
+    path = os.path.join(APP_ROOT, 'static', 'html')
+
+    for the_file in os.listdir(path):
+        file_path = os.path.join(path, the_file)
+        try:
+            if os.path.isfile(file_path):
+                os.unlink(file_path)
+        except Exception as err:
+            raise Exception(err)
 
 # ----------------------------------------------------
 # Bottle Routes
