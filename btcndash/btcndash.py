@@ -128,6 +128,12 @@ def static(filename):
     return static_file(filename, root=root)
 
 
+@app.route('/static_alt/<filename:path>')
+def static_alt(filename):
+    root = config['alternate_static'] or os.path.join(APP_ROOT, 'static')
+    return static_file(filename, root=root)
+
+
 @app.error(404)
 def error(page=None):
     path = os.path.join('static', 'html', config['pages']['404']['static'])
