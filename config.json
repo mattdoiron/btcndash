@@ -14,6 +14,7 @@
   "server_longitude": "detect",
   "debug": false,
   "log_level": "INFO",
+  "alternate_views": "",
   "qr_url": "https://chart.googleapis.com/chart",
   "qr_param": "?cht=qr&chs=186x186&chld=L|0&chl=",
   "block_height_url": "https://blockchain.info/block-height/",

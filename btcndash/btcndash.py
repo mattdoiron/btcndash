@@ -76,6 +76,7 @@ except IOError:
 app = Bottle()
 APP_ROOT = os.path.dirname(os.path.realpath(__file__))
 TEMPLATE_PATH.insert(0, os.path.join(APP_ROOT, 'views'))
+TEMPLATE_PATH.insert(0, config['alternate_views'])
 log = logger.setup_logging(config['log_level'], 'BTCnDash')
 
 # ----------------------------------------------------
