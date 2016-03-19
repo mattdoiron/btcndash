@@ -93,6 +93,10 @@ if parsed_args.clearcache:
         except Exception as err:
             raise Exception(err)
 
+if parsed_args.config:
+    log.info('Using custom config file: {}'.format(parsed_args.config))
+
+
 # ----------------------------------------------------
 # Bottle Routes
 # ----------------------------------------------------
