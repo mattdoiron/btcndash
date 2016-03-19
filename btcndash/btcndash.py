@@ -56,8 +56,10 @@ import worker
 
 def process_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('config', nargs='?', default='config.json')
-    parser.add_argument('clearcache', action="store_true", help='testhelp')
+    parser.add_argument('--config', nargs='?', default='config.json',
+                        help='Uses a custom configuration file. Use absolute path.')
+    parser.add_argument('--clearcache', action="store_true",
+                        help='Clears the page cache before continuing to load BTCnDash.')
     return parser.parse_known_args()
 
 # Parse command-line arguments
