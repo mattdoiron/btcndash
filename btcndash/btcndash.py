@@ -39,22 +39,44 @@ Donate Bitcoin to 1AHT2Zq7JneADw94M8uCdKRrqVZfhrTBYM
 
 # System Imports
 import os
+import sys
+import argparse
+import json
 from socket import error as socket_error
 from bottle import Bottle, static_file, TEMPLATE_PATH
 
 # BTCnDash Imports
-import config
 import logger
 import worker
 
+
 # ----------------------------------------------------
-# Create Bottle App and Do Initial Setup
+# Do Initial Setup and Create Bottle App
 # ----------------------------------------------------
+
+def process_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('config', nargs='?', default='config.json')
+    return parser.parse_known_args()
+
+# Parse command-line arguments
+parsed_args, unparsed_args = process_args()
+args = sys.argv[:1] + unparsed_args
+
+try:
+    with open(parsed_args.config) as config_file:
+        config = json.load(config_file)
+except IOError:
+    try:
+        with open('config.json') as config_file:
+            config = json.load(config_file)
+    except IOError as err:
+        raise IOError('Cannot find or read config file!')
 
 app = Bottle()
 APP_ROOT = os.path.dirname(os.path.realpath(__file__))
 TEMPLATE_PATH.insert(0, os.path.join(APP_ROOT, 'views'))
-log = logger.setup_logging(config.LOG_LEVEL, 'BTCnDash')
+log = logger.setup_logging(config['log_level'], 'BTCnDash')
 
 # ----------------------------------------------------
 # Bottle Routes
@@ -66,9 +88,9 @@ log = logger.setup_logging(config.LOG_LEVEL, 'BTCnDash')
 def index(_page=None):
     """Default route to display cached status pages."""
     if _page == 'donate':
-        return config.DONATE_ADDRESS
+        return config['donate_address']
 
-    page_dict = config.PAGES.get(_page or 'index', config.PAGES['404'])
+    page_dict = config['pages'].get(_page or 'index', config['pages']['404'])
     path = os.path.join('static', 'html', page_dict['static'])
     return static_file(path, root=APP_ROOT)
 
@@ -87,7 +109,7 @@ def static(filename):
 
 @app.error(404)
 def error(page=None):
-    path = os.path.join('static', 'html', config.PAGES['404']['static'])
+    path = os.path.join('static', 'html', config['pages']['404']['static'])
     return static_file(path, root=APP_ROOT)
 
 # ----------------------------------------------------
@@ -100,12 +122,12 @@ def main():
     log.info('Launching BTCnDash...')
 
     # Start the worker thread (this also creates the first cache)
-    worker_class = worker.Worker()
+    worker_class = worker.Worker(config)
 
     try:
         # Starts the Bottle server with the specified settings
-        app.run(host=config.SERVER_IP_LOCAL, port=config.SERVER_PORT,
-                server=config.SERVER_TYPE, debug=config.DEBUG)
+        app.run(host=config['server_ip_local'], port=config['server_port'],
+                server=config['server_type'], debug=config['debug'])
     except socket_error as err:
         log.error('Unable to start server: {}'.format(err))
 

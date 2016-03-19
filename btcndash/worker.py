@@ -23,18 +23,17 @@ import threading
 import atexit
 
 # BTCnDash Imports
-import config
 import page_cache
 import logger
-
-log = logger.setup_logging(config.LOG_LEVEL, __name__)
 
 
 class Worker(object):
     """Creates the worker thread, which refreshes the page cache."""
 
-    def __init__(self):
-        log.info('Launching worker...')
+    def __init__(self, config):
+        self.config = config
+        self.log = logger.setup_logging(self.config['log_level'], __name__)
+        self.log.info('Launching worker...')
         self.worker_thread = threading.Thread()
         self.refresh_cache()
 
@@ -43,11 +42,11 @@ class Worker(object):
 
     def refresh_cache(self):
         # Call PageCache object to check cache freshness
-        page_cache.PageCache()
+        page_cache.PageCache(self.config)
 
         try:
             # Set the next thread to start in cache_time seconds
-            self.worker_thread = threading.Timer(config.CACHE_TIME, self.refresh_cache, ())
+            self.worker_thread = threading.Timer(self.config['cache_time'], self.refresh_cache, ())
             self.worker_thread.daemon = True
             self.worker_thread.start()
 
