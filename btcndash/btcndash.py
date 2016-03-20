@@ -62,6 +62,8 @@ def process_args():
                         help='Clears the page cache before continuing to load BTCnDash.')
     return parser.parse_known_args()
 
+APP_ROOT = os.path.dirname(os.path.realpath(__file__))
+
 # Parse command-line arguments
 parsed_args, unparsed_args = process_args()
 args = sys.argv[:1] + unparsed_args
@@ -71,13 +73,12 @@ try:
         config = json.load(config_file)
 except IOError:
     try:
-        with open('config.json') as config_file:
+        with open(os.path.join(APP_ROOT, 'config.json')) as config_file:
             config = json.load(config_file)
     except IOError as err:
-        raise IOError('Cannot find or read config file!')
+        raise IOError('Cannot find or read config file! ({})'.format(err))
 
 app = Bottle()
-APP_ROOT = os.path.dirname(os.path.realpath(__file__))
 TEMPLATE_PATH.insert(0, os.path.join(APP_ROOT, 'views'))
 TEMPLATE_PATH.insert(0, config['alternate_views'])
 log = logger.setup_logging(config['log_level'], 'BTCnDash')
