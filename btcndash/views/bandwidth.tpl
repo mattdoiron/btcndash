@@ -26,7 +26,7 @@
                 shadow: false,
                 type: 'pie',
                 name: 'Data Transfer',
-                innerSize: '65%',
+                innerSize: '56%',
                 data: [
                     { name: 'Incoming', y: {{data['pcnt_in']}}, color: '#b2c831' },
                     { name: 'Outgoing', y: {{data['pcnt_out']}}, color: '#fa1d2d' }
