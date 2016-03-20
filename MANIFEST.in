@@ -6,6 +6,7 @@ graft scripts
 graft doc
 
 prune btcndash/static/html
+prune doc/_*
 
 global-exclude *.py[co]
 global-exclude __pycache__/*

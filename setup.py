@@ -33,6 +33,9 @@ requires = [
     "python-bitcoinlib==0.5.1",
     "bottle==0.12.9"
 ]
+requires_extra = {
+    'doc': ["sphinx==1.3.3"]
+}
 
 with open(os.path.join(project, '__init__.py'), 'r') as fd:
     version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]',
@@ -60,7 +63,8 @@ setup(
     license='GPL3',
     zip_safe=False,
     install_requires=requires,
-    include_package_data = True,
+    include_package_data=True,
+    extras_require=requires_extra,
     classifiers=[
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.5',
