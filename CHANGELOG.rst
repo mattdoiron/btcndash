@@ -1,7 +1,18 @@
 Changes
 =======
 
-v2.0.0, March x, 2016
+v2.1.0, March 20, 2016
+
+* Return config file to plain text, this time json
+* Add command line options:
+    * Specify location of config file
+    * Clear page cache on startup
+* Update js libraries (Highcharts and jQuery)
+* Add config options to add additional locations for views and static files
+* Add a setup.py file and publish to PyPI
+* Updated documentation and use Sphinx to make it pretty
+
+v2.0.0, March 16, 2016
 
 * Significant refactoring under the hood
 * Allow reordering, disabling and adding custom tiles
