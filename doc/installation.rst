@@ -39,7 +39,7 @@ The recommended way to install BTCnDash is via pip::
 
 It can also be installed manually by downloading the latest release of BTCnDash::
 
-    wget https://bitbucket.org/mattdoiron/btcndash/get/v2.0.0.tar.gz
+    wget https://bitbucket.org/mattdoiron/btcndash/get/v2.1.0.tar.gz
     
 If you have mercurial installed you can also do::
 
