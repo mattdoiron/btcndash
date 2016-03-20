@@ -63,6 +63,7 @@ def process_args():
     return parser.parse_known_args()
 
 APP_ROOT = os.path.dirname(os.path.realpath(__file__))
+DEFAULT_CONFIG = 'config.json'
 
 # Parse command-line arguments
 parsed_args, unparsed_args = process_args()
@@ -73,7 +74,7 @@ try:
         config = json.load(config_file)
 except IOError:
     try:
-        with open(os.path.join(APP_ROOT, 'config.json')) as config_file:
+        with open(os.path.join(APP_ROOT, DEFAULT_CONFIG)) as config_file:
             config = json.load(config_file)
     except IOError as err:
         raise IOError('Cannot find or read config file! ({})'.format(err))
@@ -96,7 +97,9 @@ if parsed_args.clearcache:
         except Exception as err:
             raise Exception(err)
 
-if parsed_args.config:
+if parsed_args.config == DEFAULT_CONFIG:
+    log.info('Using default config file: {}'.format(DEFAULT_CONFIG))
+else:
     log.info('Using custom config file: {}'.format(parsed_args.config))
 
 
