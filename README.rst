@@ -31,3 +31,9 @@ Thanks to those who make great tools like these that make BTCnDash possible:
 * Bottle: python web framework (http://bottlepy.org)
 * bitcoinlib: rpc library (https://github.com/petertodd/python-bitcoinlib/)
 * Blocks: bootstrap theme (http://alvarez.is/)
+
+Other Resources
+===============
+
+* See the :doc:`changelog_link` for a history of changes.
+* See the :doc:`BTCnDash Documentation<index>` for details on installation and configuration.
