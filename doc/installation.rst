@@ -1,6 +1,6 @@
-===============================
-Installation Guide for BTCnDash
-===============================
+==================
+Installation Guide
+==================
 
 BTCnDash is developed on and intended for use on Debian/Ubuntu linux flavours. It should work
 anywhere Python 2.7 or 3.5 work, but it hasn't been tested very much. BTCnDash is not currently
