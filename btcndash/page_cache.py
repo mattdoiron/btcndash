@@ -33,17 +33,17 @@ except ImportError:
     import urllib as urlrequest
 
 # BTCnDash Imports
-import config
 import logger
 
-log = logger.setup_logging(config.LOG_LEVEL, __name__)
 APP_ROOT = os.path.dirname(os.path.realpath(__file__))
 
 
 class PageCache(object):
     """Retrieves data from bitcoind via RPC and generates static, cached pages."""
 
-    def __init__(self):
+    def __init__(self, config):
+        self.config = config
+        self.log = logger.setup_logging(self.config['log_level'], __name__)
         self.location = {}
 
         # Make sure the html cache folder is present
@@ -55,7 +55,7 @@ class PageCache(object):
                 raise
 
         # Prepare the RPC connection to bitcoind
-        self.con = rpc.Proxy(service_url=config.RPC_URN)
+        self.con = rpc.Proxy(service_url=self.config['rpc_urn'])
 
         # Generate and cache all pages
         self.cache_loc()
@@ -66,36 +66,35 @@ class PageCache(object):
 
         # Refresh IP and location
         try:
-            if 'detect' in [config.SERVER_LOCATION, config.SERVER_IP_PUBLIC]:
-                loc = json.loads(urlrequest.urlopen(config.LOC_URL).read().decode('utf-8'))
-            if config.SERVER_LOCATION == 'detect':
-                log.info('Detecting server location and IP address...')
+            if 'detect' in [self.config['server_location'], self.config['server_ip_public']]:
+                loc = json.loads(urlrequest.urlopen(self.config['loc_url']).read().decode('utf-8'))
+            if self.config['server_location'] == 'detect':
+                self.log.info('Detecting server location and IP address...')
                 self.location['server_location'] = ', '.join([loc['city'], loc['region'],
                                                               loc['country']])
                 self.location['lat'] = loc['lat']
                 self.location['lon'] = loc['lon']
             else:
-                self.location['server_location'] = config.SERVER_LOCATION
-                self.location['lat'] = config.SERVER_LATITUDE
-                self.location['lon'] = config.SERVER_LONGITUDE
-            if config.SERVER_IP_PUBLIC == 'detect':
+                self.location['server_location'] = self.config['server_location']
+                self.location['lat'] = self.config['server_latitude']
+                self.location['lon'] = self.config['server_longitude']
+            if self.config['server_ip_public'] == 'detect':
                 self.location['server_ip_public'] = loc['query']
             else:
-                self.location['server_ip_public'] = config.SERVER_IP_PUBLIC
+                self.location['server_ip_public'] = self.config['server_ip_public']
         except (IOError, ValueError) as err:
-            log.error("Error: {}".format(err))
+            self.log.error("Error: {}".format(err))
             self.location['server_location'] = 'Unknown'
             self.location['server_ip_public'] = 'n/a'
             self.location['lat'] = '0'
             self.location['lon'] = '0'
 
-    @staticmethod
-    def _condense_commands():
+    def _condense_commands(self):
         """Creates a set of unique rpc commands to be executed."""
 
         # Create a set of blocks that will need data
         tiles = []
-        for page_info in config.PAGES.values():
+        for page_info in self.config['pages'].values():
             for tile in page_info['tiles']:
                 tiles.extend(tile)
         tile_set = set(tiles)
@@ -103,7 +102,7 @@ class PageCache(object):
         # Use the set of blocks to create a set of rpc commands required
         commands = []
         for tile in tile_set:
-            rpc_commands = config.TILES[tile]['rpc_commands']
+            rpc_commands = self.config['tiles'][tile]['rpc_commands']
             for command in rpc_commands:
                 commands.append(command)
         command_set = set(commands)
@@ -115,19 +114,19 @@ class PageCache(object):
         commands = self._condense_commands()
         data = {}
 
-        log.info('Retrieving data from bitcoind via RPC...')
+        self.log.info('Retrieving data from bitcoind via RPC...')
         for command in commands:
             try:
                 result = self.con.call(command)
             except JSONRPCException as err:
-                log.error("Error ({}): {}".format(err.error['code'], err.error['message']))
-                log.error("Failed to retrieve data using command '{}'.".format(command))
+                self.log.error("Error ({}): {}".format(err.error['code'], err.error['message']))
+                self.log.error("Failed to retrieve data using command '{}'.".format(command))
                 return {}
             except socket_error as err:
-                log.error("Unable to connect to Bitcoin RPC server: {}".format(err))
+                self.log.error("Unable to connect to Bitcoin RPC server: {}".format(err))
                 return {}
             except ValueError as err:
-                log.error("No response from server. Please verify your username and password!")
+                self.log.error("No response from server. Please verify your username and password!")
                 return {}
 
             # Check if we can use update directly or with a derived key name
@@ -152,7 +151,7 @@ class PageCache(object):
                 'cons': raw_data['connections'],
                 'hashrate': '{:,.1f}'.format(float(raw_data['networkhashps']) / 1.0E12),
                 'block_height': '{:,}'.format(raw_data['blocks']),
-                'block_url': config.BLOCK_HEIGHT_URL + str(raw_data['blocks']),
+                'block_url': self.config['block_height_url'] + str(raw_data['blocks']),
                 'diff': '{:,.2f}'.format(raw_data['difficulty']),
                 'version': raw_data['version'],
                 'sent': '{:,.1f}'.format(sent / 1048576.0),
@@ -162,31 +161,33 @@ class PageCache(object):
                 'pcnt_out': '{:,.1f}'.format(sent / float(total) * 100.0),
                 'tx_count': '{:,}'.format(len(raw_data['rawmempool'])),
                 'update': time.strftime("%Y-%m-%d %H:%M:%S"),
-                'ip': ':'.join([self.location['server_ip_public'], str(config.NODE_PORT)]),
+                'ip': ':'.join([self.location['server_ip_public'], str(self.config['node_port'])]),
                 'loc': self.location['server_location'],
-                'donate': config.DONATE_ADDRESS,
-                'donate_url': config.DONATE_URL + config.DONATE_ADDRESS,
-                'qr_url': config.QR_URL + config.QR_PARAM + config.DONATE_ADDRESS,
-                'map_url': config.MAP_URL.format(self.location['lat'], self.location['lon']),
-                'hash_diff_url': config.HASH_DIFF_URL,
+                'donate': self.config['donate_address'],
+                'donate_url': self.config['donate_url'] + self.config['donate_address'],
+                'qr_url': self.config['qr_url'] + self.config['qr_param'] +
+                          self.config['donate_address'],
+                'map_url': self.config['map_url'].format(self.location['lat'],
+                                                         self.location['lon']),
+                'hash_diff_url': self.config['hash_diff_url'],
                 'peers': raw_data['peerinfo'],
-                'node_url': config.IP_INFO_URL,
+                'node_url': self.config['ip_info_url'],
                 'transactions': raw_data['rawmempool'],
-                'tx_url': config.TX_INFO_URL,
+                'tx_url': self.config['tx_info_url'],
             }
         except KeyError as err:
-            log.error("Cannot find specified raw data for '{}'. Please double-check your dash "
-                      "block registry to ensure you've included all required RPC commands."
-                      .format(err.message))
+            self.log.error("Cannot find specified raw data for '{}'. Please double-check your "
+                           "dash block registry to ensure you've included all required RPC "
+                           "commands.".format(err.message))
 
         return data
 
     def cache_pages(self):
         """Creates and caches all pages depending on the age of any existing files."""
 
-        log.info('Caching pages...')
+        self.log.info('Caching pages...')
         now = time.time()
-        pages = config.PAGES
+        pages = self.config['pages']
         path = os.path.join(APP_ROOT, 'static', 'html', pages['index']['static'])
 
         # Find the last modified time of the index page and the current time
@@ -196,26 +197,26 @@ class PageCache(object):
             modified = False
 
         # Check if last modified time is > CACHE_TIME_LOC seconds ago
-        if now - modified >= config.CACHE_TIME_LOC or not modified:
+        if now - modified >= self.config['cache_time_loc'] or not modified:
 
             # Refresh location and ip before checking other pages
             self.cache_loc()
 
         # Check if last modified time is > CACHE_TIME seconds ago
-        if now - modified >= config.CACHE_TIME or not modified:
+        if now - modified >= self.config['cache_time'] or not modified:
 
             # Retrieve data for use in templates
             data = self.get_data()
             if not data:
-                log.error('No data was retrieved. Pages will not be generated.')
+                self.log.error('No data was retrieved. Pages will not be generated.')
                 return
 
             # Open the static file for each page and write the compiled template
             for page, page_info in pages.items():
                 path = os.path.join(APP_ROOT, 'static', 'html', page_info['static'])
                 data['title'] = page_info['title']
-                data['header_title'] = config.HEADER_TITLE
+                data['header_title'] = self.config['header_title']
                 with open(path, 'w') as static_page:
-                    log.info('Writing static page cache for: {}'.format(page_info['static']))
+                    self.log.info('Writing static page cache for: {}'.format(page_info['static']))
                     static_page.write(template(page_info['template'], data=data,
-                                               page_info=page_info, tiles=config.TILES))
+                                               page_info=page_info, tiles=self.config['tiles']))
