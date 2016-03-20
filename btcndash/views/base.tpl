@@ -49,6 +49,6 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script type="text/javascript" src="static/js/bootstrap.js"></script>
-    <script type="text/javascript" src="static/js/highcharts.js"></script>
+    <script type="text/javascript" src="static/js/highcharts-4.2.3.min.js"></script>
 
 </body></html>
