@@ -9,7 +9,7 @@
     <link href="static/css/bootstrap.css" rel="stylesheet" />
     <link href="static/css/main.css" rel="stylesheet" />
     <link href="static/css/font-style.css" rel="stylesheet" />
-    <script type="text/javascript" src="static/js/jquery.js"></script>
+    <script type="text/javascript" src="static/js/jquery-1.12.2.min.js"></script>
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
