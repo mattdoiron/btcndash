@@ -35,5 +35,8 @@ Thanks to those who make great tools like these that make BTCnDash possible:
 Other Resources
 ===============
 
-* See the :doc:`changelog_link` for a history of changes.
-* See the :doc:`BTCnDash Documentation<index>` for details on installation and configuration.
+* See the `BTCnDash PyPi page`_ for other info.
+* Also see the `BTCnDash documentation`_.
+
+.. _`BTCnDash PyPi page`: https://pypi.python.org/pypi/btcndash/
+.. _`BTCnDash documentation`: https://pythonhosted.org/btcndash/
