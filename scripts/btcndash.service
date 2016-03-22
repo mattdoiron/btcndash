@@ -13,8 +13,8 @@ Description=BTCnDash Bitcoin Node Dashboard
 Type=simple
 Group=btcndash
 User=btcndash
-Environment=DAEMON=/home/btcndash/btcndash/btcndash.py
-ExecStart=/home/btcndash/venv/bin/python ${DAEMON}
+Environment=DAEMON=/home/btcndash/venv/lib/python2.7/site-packages/btcndash/btcndash.py
+ExecStart=/home/btcndash/venv/bin/python ${DAEMON} --config=/home/btcndash/config.json
 
 [Install]
 WantedBy=multi-user.target

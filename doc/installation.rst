@@ -25,10 +25,9 @@ installed, but if not install them now. The exact location of the home directory
 as long as the permissions are set properly (see later steps)::
 
     sudo apt-get install python-pip python-virtualenv
-    mkdir /home/btcndash
     cd /home/btcndash
-    mkvirtualenv btcndash
-    source btcndash/bin/activate
+    virtualenv venv
+    source venv/bin/activate
 
 Install BTCnDash
 ~~~~~~~~~~~~~~~~
@@ -99,7 +98,8 @@ or::
 
     sudo service btcndash start
 
-or::
+or for systemd::
 
-    sudo systemctl btcndash start
+    sudo systemctl enable btcndash
+    sudo systemctl start btcndash
 
