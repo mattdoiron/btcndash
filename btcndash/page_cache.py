@@ -69,7 +69,7 @@ class PageCache(object):
             if 'detect' in [self.config['server_location'], self.config['server_ip_public']]:
                 loc = json.loads(urlrequest.urlopen(self.config['loc_url']).read().decode('utf-8'))
             if self.config['server_location'] == 'detect':
-                self.log.info('Detecting server location and IP address...')
+                self.log.debug('Detecting server location and IP address...')
                 self.location['server_location'] = ', '.join([loc['city'], loc['region'],
                                                               loc['country']])
                 self.location['lat'] = loc['lat']
@@ -114,7 +114,7 @@ class PageCache(object):
         commands = self._condense_commands()
         data = {}
 
-        self.log.info('Retrieving data from bitcoind via RPC...')
+        self.log.debug('Retrieving data from bitcoind via RPC...')
         for command in commands:
             try:
                 result = self.con.call(command)
@@ -185,7 +185,7 @@ class PageCache(object):
     def cache_pages(self):
         """Creates and caches all pages depending on the age of any existing files."""
 
-        self.log.info('Caching pages...')
+        self.log.debug('Caching pages...')
         now = time.time()
         pages = self.config['pages']
         path = os.path.join(APP_ROOT, 'static', 'html', pages['index']['static'])
@@ -217,6 +217,6 @@ class PageCache(object):
                 data['title'] = page_info['title']
                 data['header_title'] = self.config['header_title']
                 with open(path, 'w') as static_page:
-                    self.log.info('Writing static page cache for: {}'.format(page_info['static']))
+                    self.log.debug('Writing static page cache for: {}'.format(page_info['static']))
                     static_page.write(template(page_info['template'], data=data,
                                                page_info=page_info, tiles=self.config['tiles']))
