@@ -25,25 +25,27 @@
   "loc_url": "http://ip-api.com/json/",
   "map_url": "https://maps.google.com/maps?q={},{}&z=11",
   "donate_url": "https://blockchain.info/address/",
+  "tx_summary_limit": 500,
   "pages": {
     "index": {
       "template": "index.tpl",
       "static": "index.html",
       "title": "Bitcoin Node Status",
-      "tiles": [ ["general", "connections", "bandwidth"],
-                 ["bandwidth_summary", "network", "donate"] ]
+      "tiles": [ ["general2", "nodedetails", "mempool"],
+                 ["bandwidth_summary", "network", "bandwidth"],
+                 ["blank", "donate2"] ]
     },
     "peers": {
-      "template": "peers.tpl",
+      "template": "peers2.tpl",
       "static": "peers.html",
       "title": "Bitcoin Node Status - Peers",
-      "tiles": [ ["peers"] ]
+      "tiles": [ ["peers2"] ]
     },
     "tx": {
-      "template": "tx.tpl",
+      "template": "tx2.tpl",
       "static": "tx.html",
       "title": "Bitcoin Node Status - Transactions",
-      "tiles": [ ["tx"] ]
+      "tiles": [ ["tx2"] ]
     },
     "404": {
       "template": "404.tpl",
@@ -56,6 +58,10 @@
     "general": {
       "template": "general.tpl",
       "rpc_commands": []
+    },
+    "general2": {
+      "template": "general2.tpl",
+      "rpc_commands": [ "getnetworkinfo", "getblockchaininfo" ]
     },
     "connections": {
       "template": "connections.tpl",
@@ -77,16 +83,40 @@
       "template": "donate.tpl",
       "rpc_commands": []
     },
+    "donate2": {
+      "template": "donate2.tpl",
+      "rpc_commands": []
+    },
     "peers": {
       "template": "peers.tpl",
+      "rpc_commands": [ "getpeerinfo" ]
+    },
+    "peers2": {
+      "template": "peers2.tpl",
       "rpc_commands": [ "getpeerinfo" ]
     },
     "tx": {
       "template": "tx.tpl",
       "rpc_commands": [ "getrawmempool" ]
     },
+    "tx2": {
+      "template": "tx2.tpl",
+      "rpc_commands": [ "getrawmempool,true" ]
+    },
     "404": {
       "template": "404.tpl",
+      "rpc_commands": []
+    },
+    "mempool": {
+      "template": "mempool.tpl",
+      "rpc_commands": ["getmempoolinfo"]
+    },
+    "nodedetails": {
+      "template": "nodedetails.tpl",
+      "rpc_commands": ["getblockchaininfo", "getinfo"]
+    },
+    "blank": {
+      "template": "blank.tpl",
       "rpc_commands": []
     }
   }

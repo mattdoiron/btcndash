@@ -37,6 +37,10 @@ import logger
 
 APP_ROOT = os.path.dirname(os.path.realpath(__file__))
 
+# Service Bits
+NODE_NETWORK = (1 << 0)
+NODE_BLOOM = (1 << 2)
+
 
 class PageCache(object):
     """Retrieves data from bitcoind via RPC and generates static, cached pages."""
@@ -69,7 +73,7 @@ class PageCache(object):
             if 'detect' in [self.config['server_location'], self.config['server_ip_public']]:
                 loc = json.loads(urlrequest.urlopen(self.config['loc_url']).read().decode('utf-8'))
             if self.config['server_location'] == 'detect':
-                self.log.info('Detecting server location and IP address...')
+                self.log.debug('Detecting server location and IP address...')
                 self.location['server_location'] = ', '.join([loc['city'], loc['region'],
                                                               loc['country']])
                 self.location['lat'] = loc['lat']
@@ -101,11 +105,15 @@ class PageCache(object):
 
         # Use the set of blocks to create a set of rpc commands required
         commands = []
-        for tile in tile_set:
-            rpc_commands = self.config['tiles'][tile]['rpc_commands']
-            for command in rpc_commands:
-                commands.append(command)
-        command_set = set(commands)
+        try:
+            for tile in tile_set:
+                rpc_commands = self.config['tiles'][tile]['rpc_commands']
+                for command in rpc_commands:
+                    commands.append(command)
+            command_set = set(commands)
+        except KeyError as err:
+            self.log.error("Tile '{}' not found! Please verify your config file.".format(err))
+            return []
         return command_set
 
     def _get_raw_data(self):
@@ -114,10 +122,20 @@ class PageCache(object):
         commands = self._condense_commands()
         data = {}
 
-        self.log.info('Retrieving data from bitcoind via RPC...')
+        self.log.debug('Retrieving data from bitcoind via RPC...')
         for command in commands:
             try:
-                result = self.con.call(command)
+                command_split = command.split(',')
+                if len(command_split) > 1:
+                    if command_split[1].lower() == 'true':
+                        args = True
+                    elif command_split[1].lower() == 'false':
+                        args = False
+                    else:
+                        args = command_split[1]
+                    result = self.con.call(command_split[0], args)
+                else:
+                    result = self.con.call(command_split[0])
             except JSONRPCException as err:
                 self.log.error("Error ({}): {}".format(err.error['code'], err.error['message']))
                 self.log.error("Failed to retrieve data using command '{}'.".format(command))
@@ -131,7 +149,10 @@ class PageCache(object):
 
             # Check if we can use update directly or with a derived key name
             if isinstance(result, dict):
-                data.update(result)
+                if command.startswith('getrawmempool'):
+                    data.update({'rawmempool': result})
+                else:
+                    data.update(result)
             else:
                 data.update({command.lstrip('get'): result})
 
@@ -142,12 +163,21 @@ class PageCache(object):
 
         raw_data = self._get_raw_data()
         data = {}
+        data.update(raw_data)
 
         try:
             sent = raw_data['totalbytessent']
             received = raw_data['totalbytesrecv']
             total = sent + received
-            data = {
+            service_bits = int(raw_data['localservices'], 16)
+            services = []
+            if NODE_NETWORK == service_bits & NODE_NETWORK:
+                services.append("NODE_NETWORK")
+            if NODE_BLOOM == service_bits & NODE_BLOOM:
+                services.append("NODE_BLOOM")
+            services_offered = ', '.join(services)
+            data.update({
+                'services_offered': services_offered,
                 'cons': raw_data['connections'],
                 'hashrate': '{:,.1f}'.format(float(raw_data['networkhashps']) / 1.0E12),
                 'block_height': '{:,}'.format(raw_data['blocks']),
@@ -174,7 +204,8 @@ class PageCache(object):
                 'node_url': self.config['ip_info_url'],
                 'transactions': raw_data['rawmempool'],
                 'tx_url': self.config['tx_info_url'],
-            }
+                'tx_summary_limit': self.config['tx_summary_limit']
+            })
         except KeyError as err:
             self.log.error("Cannot find specified raw data for '{}'. Please double-check your "
                            "dash block registry to ensure you've included all required RPC "
@@ -185,7 +216,7 @@ class PageCache(object):
     def cache_pages(self):
         """Creates and caches all pages depending on the age of any existing files."""
 
-        self.log.info('Caching pages...')
+        self.log.debug('Caching pages...')
         now = time.time()
         pages = self.config['pages']
         path = os.path.join(APP_ROOT, 'static', 'html', pages['index']['static'])
@@ -217,6 +248,6 @@ class PageCache(object):
                 data['title'] = page_info['title']
                 data['header_title'] = self.config['header_title']
                 with open(path, 'w') as static_page:
-                    self.log.info('Writing static page cache for: {}'.format(page_info['static']))
+                    self.log.debug('Writing static page cache for: {}'.format(page_info['static']))
                     static_page.write(template(page_info['template'], data=data,
                                                page_info=page_info, tiles=self.config['tiles']))

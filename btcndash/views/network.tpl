@@ -1,7 +1,7 @@
 <!-- NETWORK STATS -->
 <div class="col-sm-4 col-lg-4">
     <div class="dash-unit">
-        <dtitle>Network Stats</dtitle>
+        <dtitle>Network Information</dtitle>
         <hr/>
         <div class="cont">
             <h2>{{data['block_height']}}</a></h2>
