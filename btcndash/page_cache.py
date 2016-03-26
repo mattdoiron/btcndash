@@ -146,12 +146,13 @@ class PageCache(object):
 
         raw_data = self._get_raw_data()
         data = {}
+        data.update(raw_data)
 
         try:
             sent = raw_data['totalbytessent']
             received = raw_data['totalbytesrecv']
             total = sent + received
-            data = {
+            data.update({
                 'cons': raw_data['connections'],
                 'hashrate': '{:,.1f}'.format(float(raw_data['networkhashps']) / 1.0E12),
                 'block_height': '{:,}'.format(raw_data['blocks']),
@@ -178,7 +179,7 @@ class PageCache(object):
                 'node_url': self.config['ip_info_url'],
                 'transactions': raw_data['rawmempool'],
                 'tx_url': self.config['tx_info_url'],
-            }
+            })
         except KeyError as err:
             self.log.error("Cannot find specified raw data for '{}'. Please double-check your "
                            "dash block registry to ensure you've included all required RPC "
