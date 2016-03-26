@@ -35,10 +35,10 @@
                  ["blank", "donate2"] ]
     },
     "peers": {
-      "template": "peers.tpl",
+      "template": "peers2.tpl",
       "static": "peers.html",
       "title": "Bitcoin Node Status - Peers",
-      "tiles": [ ["peers"] ]
+      "tiles": [ ["peers2"] ]
     },
     "tx": {
       "template": "tx.tpl",
@@ -88,6 +88,10 @@
     },
     "peers": {
       "template": "peers.tpl",
+      "rpc_commands": [ "getpeerinfo" ]
+    },
+    "peers2": {
+      "template": "peers2.tpl",
       "rpc_commands": [ "getpeerinfo" ]
     },
     "tx": {

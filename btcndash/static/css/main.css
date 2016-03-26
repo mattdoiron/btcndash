@@ -317,18 +317,16 @@ input[type=submit] {
     border-radius: 4px;
 }
 
-input[type=text], textarea {
+input[type=search], textarea {
 	background: #cdcbcc;
 	font-size: 13px;
-	display: block;
-	width: 100%;
 	border: none;
 	box-shadow: none;
-	height: 30px;
-	line-height: 18px;
+	height: 20px;
+	line-height: 8px;
 	padding: 0;
-	text-indent: 18px;
-	margin: 0 0 18px;
+	text-indent: 2px;
+	margin: 0 0 8px;
 }
 
 textarea {
