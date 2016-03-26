@@ -37,6 +37,10 @@ import logger
 
 APP_ROOT = os.path.dirname(os.path.realpath(__file__))
 
+# Service Bits
+NODE_NETWORK = (1 << 0)
+NODE_BLOOM = (1 << 2)
+
 
 class PageCache(object):
     """Retrieves data from bitcoind via RPC and generates static, cached pages."""
@@ -152,7 +156,15 @@ class PageCache(object):
             sent = raw_data['totalbytessent']
             received = raw_data['totalbytesrecv']
             total = sent + received
+            service_bits = int(raw_data['localservices'], 16)
+            services = []
+            if NODE_NETWORK == service_bits & NODE_NETWORK:
+                services.append("NODE_NETWORK")
+            if NODE_BLOOM == service_bits & NODE_BLOOM:
+                services.append("NODE_BLOOM")
+            services_offered = ', '.join(services)
             data.update({
+                'services_offered': services_offered,
                 'cons': raw_data['connections'],
                 'hashrate': '{:,.1f}'.format(float(raw_data['networkhashps']) / 1.0E12),
                 'block_height': '{:,}'.format(raw_data['blocks']),
