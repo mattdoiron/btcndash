@@ -37,10 +37,6 @@ import logger
 
 APP_ROOT = os.path.dirname(os.path.realpath(__file__))
 
-# Service Bits
-NODE_NETWORK = (1 << 0)
-NODE_BLOOM = (1 << 2)
-
 
 class PageCache(object):
     """Retrieves data from bitcoind via RPC and generates static, cached pages."""
@@ -158,6 +154,40 @@ class PageCache(object):
 
         return data
 
+    @staticmethod
+    def _services_offered(service_bits_in):
+        """Returns nice string listing the services corresponding to a service bit
+        :param service_bits_in: String or integer of node service bits
+        :return:
+        """
+
+        # Service bits directly from Bitcoin core source
+        NODE_NETWORK = (1 << 0)
+        NODE_GETUTXO = (1 << 1)
+        NODE_BLOOM = (1 << 2)
+
+        # Convert type of input if necessary
+        if isinstance(service_bits_in, int):
+            service_bits = service_bits_in
+        elif isinstance(service_bits_in, str) or isinstance(service_bits_in, unicode):
+            service_bits = int(service_bits_in, 16)
+        else:
+            service_bits = service_bits_in
+
+        # Construct list of services offered
+        services = []
+        if NODE_NETWORK == service_bits & NODE_NETWORK:
+            services.append("NODE_NETWORK")
+        if NODE_GETUTXO == service_bits & NODE_GETUTXO:
+            services.append("NODE_GETUTXO")
+        if NODE_BLOOM == service_bits & NODE_BLOOM:
+            services.append("NODE_BLOOM")
+        if not services:
+            services.append("NONE")
+        services_offered = ', '.join(services)
+
+        return services_offered
+
     def get_data(self):
         """Gets data and processes it into the format required for the templates."""
 
@@ -168,16 +198,8 @@ class PageCache(object):
         data.update(self.location)
 
         try:
-            service_bits = int(raw_data['localservices'], 16)
-            services = []
-            if NODE_NETWORK == service_bits & NODE_NETWORK:
-                services.append("NODE_NETWORK")
-            if NODE_BLOOM == service_bits & NODE_BLOOM:
-                services.append("NODE_BLOOM")
-            services_offered = ', '.join(services)
-            data.update({
-                'services_offered': services_offered,
-            })
+            services_offered = self._services_offered(data['localservices'])
+            data.update({'services_offered': services_offered})
         except KeyError as err:
             self.log.error("Cannot find specified raw data for '{}'. Please double-check your "
                            "dash block registry to ensure you've included all required RPC "
