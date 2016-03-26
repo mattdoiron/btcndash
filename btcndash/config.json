@@ -57,6 +57,10 @@
       "template": "general.tpl",
       "rpc_commands": []
     },
+    "general2": {
+      "template": "general2.tpl",
+      "rpc_commands": [ "getnetworkinfo", "getblockchaininfo" ]
+    },
     "connections": {
       "template": "connections.tpl",
       "rpc_commands": [ "getinfo" ]
@@ -77,6 +81,10 @@
       "template": "donate.tpl",
       "rpc_commands": []
     },
+    "donate2": {
+      "template": "donate2.tpl",
+      "rpc_commands": []
+    },
     "peers": {
       "template": "peers.tpl",
       "rpc_commands": [ "getpeerinfo" ]
@@ -87,6 +95,18 @@
     },
     "404": {
       "template": "404.tpl",
+      "rpc_commands": []
+    },
+    "mempool": {
+      "template": "mempool.tpl",
+      "rpc_commands": ["getmempoolinfo"]
+    },
+    "nodedetails": {
+      "template": "nodedetails.tpl",
+      "rpc_commands": ["getblockchaininfo", "getinfo"]
+    },
+    "blank": {
+      "template": "blank.tpl",
       "rpc_commands": []
     }
   }
