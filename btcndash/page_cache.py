@@ -204,6 +204,7 @@ class PageCache(object):
                 'node_url': self.config['ip_info_url'],
                 'transactions': raw_data['rawmempool'],
                 'tx_url': self.config['tx_info_url'],
+                'tx_summary_limit': self.config['tx_summary_limit']
             })
         except KeyError as err:
             self.log.error("Cannot find specified raw data for '{}'. Please double-check your "

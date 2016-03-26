@@ -135,6 +135,9 @@ External API settings
 Page and Tile Settings
 ======================
 
+:mod:`tx_summary_limit`
+    Limits the number of recent transactions displayed in the data table found on the transactions
+    page. Defaults to `500`.
 :mod:`pages`
     Stores various information about the pages that make up BTCnDash.
 

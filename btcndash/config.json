@@ -25,6 +25,7 @@
   "loc_url": "http://ip-api.com/json/",
   "map_url": "https://maps.google.com/maps?q={},{}&z=11",
   "donate_url": "https://blockchain.info/address/",
+  "tx_summary_limit": 500,
   "pages": {
     "index": {
       "template": "index.tpl",
@@ -41,10 +42,10 @@
       "tiles": [ ["peers2"] ]
     },
     "tx": {
-      "template": "tx.tpl",
+      "template": "tx2.tpl",
       "static": "tx.html",
       "title": "Bitcoin Node Status - Transactions",
-      "tiles": [ ["tx"] ]
+      "tiles": [ ["tx2"] ]
     },
     "404": {
       "template": "404.tpl",
@@ -97,6 +98,10 @@
     "tx": {
       "template": "tx.tpl",
       "rpc_commands": [ "getrawmempool" ]
+    },
+    "tx2": {
+      "template": "tx2.tpl",
+      "rpc_commands": [ "getrawmempool,true" ]
     },
     "404": {
       "template": "404.tpl",
