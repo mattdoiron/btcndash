@@ -30,8 +30,9 @@
       "template": "index.tpl",
       "static": "index.html",
       "title": "Bitcoin Node Status",
-      "tiles": [ ["general", "connections", "bandwidth"],
-                 ["bandwidth_summary", "network", "donate"] ]
+      "tiles": [ ["general2", "nodedetails", "mempool"],
+                 ["bandwidth_summary", "network", "bandwidth"],
+                 ["blank", "donate2"] ]
     },
     "peers": {
       "template": "peers.tpl",
