@@ -164,6 +164,7 @@ class PageCache(object):
         raw_data = self._get_raw_data()
         data = {}
         data.update(raw_data)
+        data.update(self.config)
 
         try:
             sent = raw_data['totalbytessent']
