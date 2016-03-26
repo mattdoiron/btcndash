@@ -1,6 +1,16 @@
 Changes
 =======
 
+v2.2.0, March 26, 2016
+
+* Added interactive tables to the transactions and peers pages
+* Added several new tiles and reformatted others. Made the new ones the default, but originals
+are still present if desired.
+* Some code cleanup and fixes
+* Allow an argument to RPC commands
+* Make some logging less verbose
+* Documentation updates
+
 v2.1.0, March 20, 2016
 
 * Return config file to plain text, this time json
