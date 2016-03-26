@@ -47,8 +47,8 @@
                 </thead>
                 <tbody>
                     % import datetime as dt
-                    % for txid in data['rawmempool'].keys()[:data['tx_summary_limit']]:
-                    %    tx = data['rawmempool'][txid]
+                    % for txid in list(data['rawmempool'].keys())[:data['tx_summary_limit']]:
+                    % tx = data['rawmempool'][txid]
                     <tr class="even gradeU">
                         <td class="center"><a href="{{data['tx_info_url'] + txid}}">{{txid}}</a></td>
                         <td class="center">{{dt.datetime.fromtimestamp(tx['time']).strftime('%c')}}</td>
