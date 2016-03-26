@@ -5,7 +5,9 @@
         <hr/>
         <div class="cont">
             <p>
-                <a href='https://blockchain.info/address/{{data['donate']}}'><img src='{{data['qr_url']}}' alt='QRCode' />{{data['donate']}}</a>
+                % donate = data['donate_url'] + data['donate_address']
+                % qr_url = data['qr_url'] + data['qr_param'] + data['donate_address']
+                <a href='{{donate}}'><img src='{{qr_url}}' alt='QRCode' />{{data['donate_address']}}</a>
             </p>
         </div>
     </div>

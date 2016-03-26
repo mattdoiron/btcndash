@@ -19,8 +19,8 @@
                   <h1>Connected Peers</h1>
                   <div class="cont">
                       <p>
-                          % for peer in data['peers']:
-                              <a href="{{data['node_url'] + peer['addr'].partition(':')[0]}}">{{peer['addr']}}</a> ({{peer['subver']}})<br/>
+                          % for peer in data['peerinfo']:
+                              <a href="{{data['ip_info_url'] + peer['addr'].partition(':')[0]}}">{{peer['addr']}}</a> ({{peer['subver']}})<br/>
                           % end
                       </p>
                   </div>

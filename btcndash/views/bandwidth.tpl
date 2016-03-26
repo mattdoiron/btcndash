@@ -1,4 +1,7 @@
 <!-- DATA TRANSFER CHART -->
+% total = data['totalbytessent'] + data['totalbytesrecv']
+% pcnt_in = '{:,.1f}'.format(data['totalbytesrecv'] / float(total) * 100.0)
+% pcnt_out = '{:,.1f}'.format(data['totalbytessent'] / float(total) * 100.0)
 <script type="text/javascript">
     $(document).ready(function() {
         info = new Highcharts.Chart({
@@ -28,8 +31,8 @@
                 name: 'Data Transfer',
                 innerSize: '56%',
                 data: [
-                    { name: 'Incoming', y: {{data['pcnt_in']}}, color: '#b2c831' },
-                    { name: 'Outgoing', y: {{data['pcnt_out']}}, color: '#fa1d2d' }
+                    { name: 'Incoming', y: {{pcnt_in}}, color: '#b2c831' },
+                    { name: 'Outgoing', y: {{pcnt_out}}, color: '#fa1d2d' }
                 ],
                 dataLabels: {
                     enabled: false,
@@ -45,7 +48,7 @@
         <dtitle>Bandwidth Chart</dtitle>
         <hr/>
         <div id="load"></div>
-        <h3>{{data['pcnt_in']}}% Incoming Data</h3>
-        <h3>{{data['pcnt_out']}}% Outgoing Data</h3>
+        <h3>{{pcnt_in}}% Incoming Data</h3>
+        <h3>{{pcnt_out}}% Outgoing Data</h3>
     </div>
 </div>

@@ -4,11 +4,15 @@
         <dtitle>Network Information</dtitle>
         <hr/>
         <div class="cont">
-            <h2>{{data['block_height']}}</a></h2>
-            <h3><a href="{{data['block_url']}}">Block Height</a></h3>
-            <h2>{{data['hashrate']}} Th/s</h2>
+            % diff = '{:,.2f}'.format(data['difficulty'])
+            % block_height = '{:,}'.format(data['blocks'])
+            % hashrate = '{:,.1f}'.format(float(data['networkhashps']) / 1.0E12)
+            % block_url = data['block_height_url'] + str(data['blocks'])
+            <h2>{{block_height}}</a></h2>
+            <h3><a href="{{block_url}}">Block Height</a></h3>
+            <h2>{{hashrate}} Th/s</h2>
             <h3><a href='{{data['hash_diff_url']}}'>Hash Rate</a></h3>
-            <h2>{{data['diff']}}</a></h2>
+            <h2>{{diff}}</a></h2>
             <h3><a href='{{data['hash_diff_url']}}'>Difficulty</a></h3>
         </div>
     </div>

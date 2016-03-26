@@ -48,9 +48,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    % for peer in data['peers']:
+                    % for peer in data['peerinfo']:
                     <tr class="even gradeU">
-                        <td class="center"><a href="{{data['node_url'] + peer['addr'].partition(':')[0]}}">{{peer['addr']}}</a></td>
+                        <td class="center"><a href="{{data['ip_info_url'] + peer['addr'].partition(':')[0]}}">{{peer['addr']}}</a></td>
                         <td class="center">{{peer['subver']}}</td>
                         <td class="center">{{peer['version']}}</td>
                         <td class="center">{{int(peer['services'])}}</td>

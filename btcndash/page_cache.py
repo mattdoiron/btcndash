@@ -168,9 +168,6 @@ class PageCache(object):
         data.update(self.location)
 
         try:
-            sent = raw_data['totalbytessent']
-            received = raw_data['totalbytesrecv']
-            total = sent + received
             service_bits = int(raw_data['localservices'], 16)
             services = []
             if NODE_NETWORK == service_bits & NODE_NETWORK:
@@ -180,33 +177,6 @@ class PageCache(object):
             services_offered = ', '.join(services)
             data.update({
                 'services_offered': services_offered,
-                'cons': raw_data['connections'],
-                'hashrate': '{:,.1f}'.format(float(raw_data['networkhashps']) / 1.0E12),
-                'block_height': '{:,}'.format(raw_data['blocks']),
-                'block_url': self.config['block_height_url'] + str(raw_data['blocks']),
-                'diff': '{:,.2f}'.format(raw_data['difficulty']),
-                'version': raw_data['version'],
-                'sent': '{:,.1f}'.format(sent / 1048576.0),
-                'recv': '{:,.1f}'.format(received / 1048576.0),
-                'total': '{:,.3f}'.format(total / 1073741824.0),
-                'pcnt_in': '{:,.1f}'.format(received / float(total) * 100.0),
-                'pcnt_out': '{:,.1f}'.format(sent / float(total) * 100.0),
-                'tx_count': '{:,}'.format(len(raw_data['rawmempool'])),
-                'update': time.strftime("%Y-%m-%d %H:%M:%S"),
-                'ip': ':'.join([self.location['server_ip_public'], str(self.config['node_port'])]),
-                'loc': self.location['server_location'],
-                'donate': self.config['donate_address'],
-                'donate_url': self.config['donate_url'] + self.config['donate_address'],
-                'qr_url': self.config['qr_url'] + self.config['qr_param'] +
-                          self.config['donate_address'],
-                'map_url': self.config['map_url'].format(self.location['lat'],
-                                                         self.location['lon']),
-                'hash_diff_url': self.config['hash_diff_url'],
-                'peers': raw_data['peerinfo'],
-                'node_url': self.config['ip_info_url'],
-                'transactions': raw_data['rawmempool'],
-                'tx_url': self.config['tx_info_url'],
-                'tx_summary_limit': self.config['tx_summary_limit']
             })
         except KeyError as err:
             self.log.error("Cannot find specified raw data for '{}'. Please double-check your "

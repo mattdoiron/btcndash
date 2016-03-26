@@ -19,8 +19,8 @@
                 <h1>Last 25 Transactions</h1>
                 <div class="cont">
                     <p>
-                        % for tx in data['transactions'][-25:]:
-                            <a href="{{data['tx_url'] + tx}}">{{tx}}</a><br/>
+                        % for tx in data['rawmempool'][-25:]:
+                            <a href="{{data['tx_info_url'] + tx}}">{{tx}}</a><br/>
                         % end
                     </p>
                 </div>

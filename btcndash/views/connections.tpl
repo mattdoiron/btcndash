@@ -4,7 +4,7 @@
         <dtitle>Connections</dtitle>
         <hr/>
         <div class="cont">
-            <h2>{{data['cons']}}</h2>
+            <h2>{{data['connections']}}</h2>
             <h3><a href="/peers">Connected Peers</a></h3>
         </div>
     </div>
@@ -13,7 +13,8 @@
         <dtitle>Transactions</dtitle>
         <hr/>
         <div class="cont">
-            <h2>{{data['tx_count']}}</h2>
+            % tx_count = '{:,}'.format(len(data['rawmempool']))
+            <h2>{{tx_count}}</h2>
             <h3><a href="/tx">Recent Transactions</a></h3>
         </div>
     </div>
