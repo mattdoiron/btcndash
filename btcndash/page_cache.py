@@ -125,7 +125,17 @@ class PageCache(object):
         self.log.debug('Retrieving data from bitcoind via RPC...')
         for command in commands:
             try:
-                result = self.con.call(command)
+                command_split = command.split(',')
+                if len(command_split) > 1:
+                    if command_split[1].lower() == 'true':
+                        args = True
+                    elif command_split[1].lower() == 'false':
+                        args = False
+                    else:
+                        args = command_split[1]
+                    result = self.con.call(command_split[0], args)
+                else:
+                    result = self.con.call(command_split[0])
             except JSONRPCException as err:
                 self.log.error("Error ({}): {}".format(err.error['code'], err.error['message']))
                 self.log.error("Failed to retrieve data using command '{}'.".format(command))
@@ -139,7 +149,10 @@ class PageCache(object):
 
             # Check if we can use update directly or with a derived key name
             if isinstance(result, dict):
-                data.update(result)
+                if command.startswith('getrawmempool'):
+                    data.update({'rawmempool': result})
+                else:
+                    data.update(result)
             else:
                 data.update({command.lstrip('get'): result})
 
