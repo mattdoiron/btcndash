@@ -101,11 +101,15 @@ class PageCache(object):
 
         # Use the set of blocks to create a set of rpc commands required
         commands = []
-        for tile in tile_set:
-            rpc_commands = self.config['tiles'][tile]['rpc_commands']
-            for command in rpc_commands:
-                commands.append(command)
-        command_set = set(commands)
+        try:
+            for tile in tile_set:
+                rpc_commands = self.config['tiles'][tile]['rpc_commands']
+                for command in rpc_commands:
+                    commands.append(command)
+            command_set = set(commands)
+        except KeyError as err:
+            self.log.error("Tile '{}' not found! Please verify your config file.".format(err))
+            return []
         return command_set
 
     def _get_raw_data(self):
