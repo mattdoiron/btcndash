@@ -5,7 +5,7 @@ v2.2.0, March 26, 2016
 
 * Added interactive tables to the transactions and peers pages
 * Added several new tiles and reformatted others. Made the new ones the default, but originals
-are still present if desired.
+  are still present if desired.
 * Some code cleanup and fixes
 * Allow an argument to RPC commands
 * Make some logging less verbose
