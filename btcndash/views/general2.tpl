@@ -6,7 +6,7 @@
         <div class="info-user">
             <span aria-hidden="true" class="li_display fs2"></span>
         </div>
-        <h2>Bitcoin Node</h2>
+        <h2>{{data['node_name']}}</h2>
         <h1>{{data['subversion']}} ({{data['protocolversion']}})</h1>
         <h1>{{data['ip']}}</h1>
         <h3><a href='{{data['map_url']}}'>{{data['loc']}}</a></h3>

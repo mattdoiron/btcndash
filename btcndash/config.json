@@ -2,6 +2,7 @@
   "rpc_urn": "http://user1:YOUR_BIG_LONG_PASSWORD_HERE@127.0.0.1:8332",
   "node_port": 8333,
   "header_title": " BTCnDash: Bitcoin Node Dashboard",
+  "node_name": "Bitcoin Node",
   "donate_address": "1AHT2Zq7JneADw94M8uCdKRrqVZfhrTBYM",
   "cache_time": 300,
   "cache_time_loc": 1800,

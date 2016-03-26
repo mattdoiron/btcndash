@@ -56,6 +56,8 @@ General settings
 
 :mod:`header_title`
     This text will appear in the header of all pages to the right of the bitcoin logo.
+:mod:`node_name`
+    This is the text that appears in the Node Information tile as the name of the Node.
 :mod:`donate_address`
     Bitcoin address to which donations can be sent for this bitcoin node server. This will be
     displayed on the dashboard and used to automatically generate a qr code.
