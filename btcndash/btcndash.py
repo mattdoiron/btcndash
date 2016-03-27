@@ -78,6 +78,8 @@ except IOError:
             config = json.load(config_file)
     except IOError as err:
         raise IOError('Cannot find or read config file! ({})'.format(err))
+    except ValueError as err:
+        raise ValueError('Syntax error in config file! ({})'.format(err))
 
 app = Bottle()
 TEMPLATE_PATH.insert(0, os.path.join(APP_ROOT, 'views'))
