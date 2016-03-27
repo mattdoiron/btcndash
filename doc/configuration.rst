@@ -133,6 +133,8 @@ External API settings
     define where the latitude and longitude will be substituted.
 :mod:`donate_url`
     Address to use when directing a visitor to the donate address.
+:mod:`bitnodes_url`
+    Address used when querying the Bitnodes API.
 
 Page and Tile Settings
 ======================

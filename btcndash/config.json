@@ -26,6 +26,7 @@
   "loc_url": "http://ip-api.com/json/",
   "map_url": "https://maps.google.com/maps?q={},{}&z=11",
   "donate_url": "https://blockchain.info/address/",
+  "bitnodes_url": "https://bitnodes.21.co/api/v1/",
   "tx_summary_limit": 500,
   "pages": {
     "index": {
@@ -34,7 +35,7 @@
       "title": "Bitcoin Node Status",
       "tiles": [ ["general2", "nodedetails", "mempool"],
                  ["bandwidth_summary", "network", "bandwidth"],
-                 ["blank", "donate2"] ]
+                 ["bitnodes", "donate2"] ]
     },
     "peers": {
       "template": "peers2.tpl",
@@ -119,6 +120,10 @@
     "blank": {
       "template": "blank.tpl",
       "rpc_commands": []
+    },
+    "bitnodes": {
+      "template": "bitnodes.tpl",
+      "rpc_commands": ["bitnodes"]
     }
   }
 }

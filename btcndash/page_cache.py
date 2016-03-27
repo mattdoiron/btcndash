@@ -112,14 +112,15 @@ class PageCache(object):
             return []
         return command_set
 
-    def _get_raw_data(self):
+    def _get_rpc_data(self, commands):
         """Retrieve and combine raw data from the RPC server."""
 
-        commands = self._condense_commands()
         data = {}
 
         self.log.debug('Retrieving data from bitcoind via RPC...')
         for command in commands:
+            if command == 'bitnodes':
+                continue
             try:
                 command_split = command.split(',')
                 if len(command_split) > 1:
@@ -153,6 +154,19 @@ class PageCache(object):
                 data.update({command.lstrip('get'): result})
 
         return data
+
+    def _get_bitnodes_data(self):
+        """Retrieves info relating to the Bitnodes program."""
+
+        ip = '-'.join([self.location['server_ip_public'], str(self.config['node_port'])])
+        rank_query = "nodes/leaderboard/{}/".format(ip)
+        status_query = "nodes/{}/".format(ip)
+        rank_url = self.config['bitnodes_url'] + rank_query
+        status_url = self.config['bitnodes_url'] + status_query
+        rank = json.loads(urlrequest.urlopen(rank_url).read().decode('utf-8'))
+        status = json.loads(urlrequest.urlopen(status_url).read().decode('utf-8'))
+        bitnodes_link = self.config['bitnodes_url'].replace('api/v1', 'nodes') + ip
+        return {'status': status, 'rank': rank, 'bitnodes_link': bitnodes_link}
 
     @staticmethod
     def _services_offered(service_bits_in):
@@ -191,11 +205,14 @@ class PageCache(object):
     def get_data(self):
         """Gets data and processes it into the format required for the templates."""
 
-        raw_data = self._get_raw_data()
         data = {}
-        data.update(raw_data)
+        commands = self._condense_commands()
+        data.update(self._get_rpc_data(commands))
         data.update(self.config)
         data.update(self.location)
+
+        if 'bitnodes' in commands:
+            data.update({'bitnodes': self._get_bitnodes_data()})
 
         try:
             services_offered = self._services_offered(data['localservices'])
