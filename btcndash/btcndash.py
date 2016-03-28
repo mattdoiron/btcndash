@@ -69,17 +69,19 @@ DEFAULT_CONFIG = 'config.json'
 parsed_args, unparsed_args = process_args()
 args = sys.argv[:1] + unparsed_args
 
+# Load default config first, then update with custom config
+# This ensures that all required settings will have at least a default value.
 try:
-    with open(parsed_args.config) as config_file:
+    default_config_path = os.path.join(APP_ROOT, DEFAULT_CONFIG)
+    with open(default_config_path) as config_file:
         config = json.load(config_file)
-except IOError:
-    try:
-        with open(os.path.join(APP_ROOT, DEFAULT_CONFIG)) as config_file:
-            config = json.load(config_file)
-    except IOError as err:
-        raise IOError('Cannot find or read config file! ({})'.format(err))
-    except ValueError as err:
-        raise ValueError('Syntax error in config file! ({})'.format(err))
+    if parsed_args.config != DEFAULT_CONFIG:
+        with open(parsed_args.config) as config_file:
+            config.update(json.load(config_file))
+except IOError as err:
+    raise IOError('Cannot find or read config file! ({})'.format(err))
+except ValueError as err:
+    raise ValueError('Syntax error in config file! ({})'.format(err))
 
 app = Bottle()
 TEMPLATE_PATH.insert(0, os.path.join(APP_ROOT, 'views'))
