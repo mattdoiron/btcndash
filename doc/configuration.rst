@@ -135,6 +135,8 @@ External API settings
     Address to use when directing a visitor to the donate address.
 :mod:`bitnodes_url`
     Address used when querying the Bitnodes API.
+:mod:`fee_url`
+    Address used for retrieving fee information.
 
 Page and Tile Settings
 ======================

@@ -27,6 +27,7 @@
   "map_url": "https://maps.google.com/maps?q={},{}&z=11",
   "donate_url": "https://blockchain.info/address/",
   "bitnodes_url": "https://bitnodes.21.co/api/v1/",
+  "fee_url": "https://bitcoinfees.21.co/api/v1/fees/",
   "tx_summary_limit": 500,
   "pages": {
     "index": {
@@ -35,7 +36,7 @@
       "title": "Bitcoin Node Status",
       "tiles": [ ["general2", "nodedetails", "mempool"],
                  ["bandwidth_summary", "network", "bandwidth"],
-                 ["bitnodes", "donate2"] ]
+                 ["bitnodes", "donate2", "21co_fees"] ]
     },
     "peers": {
       "template": "peers2.tpl",
@@ -124,6 +125,10 @@
     "bitnodes": {
       "template": "bitnodes.tpl",
       "rpc_commands": ["bitnodes"]
+    },
+    "21co_fees": {
+      "template": "fees.tpl",
+      "rpc_commands": ["21co_fees"]
     }
   }
 }

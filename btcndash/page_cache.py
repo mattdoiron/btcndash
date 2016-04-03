@@ -119,7 +119,7 @@ class PageCache(object):
 
         self.log.debug('Retrieving data from bitcoind via RPC...')
         for command in commands:
-            if command == 'bitnodes':
+            if command in ['bitnodes', '21co_fees']:
                 continue
             try:
                 command_split = command.split(',')
@@ -154,6 +154,14 @@ class PageCache(object):
                 data.update({command.lstrip('get'): result})
 
         return data
+
+    def _get_21co_fees(self):
+        """Retrieves info relating to fee estimates from 21.co"""
+
+        fee_url = self.config['fee_url'] + 'recommended'
+        req = urlrequest.Request(fee_url, headers={'User-Agent': 'Mozilla/5.0'})
+        fees = json.loads(urlrequest.urlopen(req).read().decode('utf-8'))
+        return fees
 
     def _get_bitnodes_data(self):
         """Retrieves info relating to the Bitnodes program."""
@@ -213,6 +221,9 @@ class PageCache(object):
 
         if 'bitnodes' in commands:
             data.update({'bitnodes': self._get_bitnodes_data()})
+
+        if '21co_fees' in commands:
+            data.update({'21co_fees': self._get_21co_fees()})
 
         try:
             services_offered = self._services_offered(data['localservices'])
