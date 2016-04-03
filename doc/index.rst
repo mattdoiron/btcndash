@@ -14,4 +14,5 @@ Contents:
    self
    installation.rst
    configuration.rst
+   customization.rst
    changelog_link.rst
