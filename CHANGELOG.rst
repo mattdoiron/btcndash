@@ -1,6 +1,16 @@
 Changes
 =======
 
+v2.3.0, April 3, 2016
+
+* Documentation updates
+* Allow name of node to be customized
+* Make location variables accessible to templates directly
+* Move formatting into the templates themselves
+* Fixed some Python 2/3 issues
+* New tiles: bitnodes data and fee summary
+* Always load default config first, then overwrite with any custom config
+
 v2.2.0, March 26, 2016
 
 * Added interactive tables to the transactions and peers pages
