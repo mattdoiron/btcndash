@@ -13,7 +13,7 @@
             % fee_summary_url = data['fee_url'].replace('api/v1/fees/', '')
             <p><bold>{{fastestfee}} </bold> Satoshi/Byte | <ok>Fastest</ok></p>
             <p><bold>{{half_hour_fee}} </bold> Satoshi/Byte | <ok>Half-hour</ok></p>
-            <p><bold>{{hour_fee}} </bold> Satoshi/Byte | <ok>Hour Fee</ok></p>
+            <p><bold>{{hour_fee}} </bold> Satoshi/Byte | <ok>Hour</ok></p>
             <p><a href="{{fee_summary_url}}"><ok>Detailed Breakdown</ok></a></p>
         </div>
     </div>
