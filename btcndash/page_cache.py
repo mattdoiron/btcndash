@@ -30,7 +30,7 @@ from bitcoin.rpc import JSONRPCException
 try:
     import urllib.request as urlrequest
 except ImportError:
-    import urllib as urlrequest
+    import urllib2 as urlrequest
 
 # BTCnDash Imports
 import logger
@@ -231,7 +231,7 @@ class PageCache(object):
         except KeyError as err:
             self.log.error("Cannot find specified raw data for '{}'. Please double-check your "
                            "dash block registry to ensure you've included all required RPC "
-                           "commands.".format(err.message))
+                           "commands.".format(err))
 
         return data
 
