@@ -30,11 +30,11 @@ from setuptools import setup
 project = 'btcndash'
 packages = ['btcndash']
 requires = [
-    "python-bitcoinlib==0.5.1",
-    "bottle==0.12.9"
+    "python-bitcoinlib==0.7.0",
+    "bottle==0.12.10"
 ]
 requires_extra = {
-    'doc': ["sphinx==1.3.3"]
+    'doc': ["sphinx==1.4.8"]
 }
 
 with open(os.path.join(project, '__init__.py'), 'r') as fd:
