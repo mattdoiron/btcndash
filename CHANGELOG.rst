@@ -2,6 +2,7 @@ Changes
 =======
 
 v2.3.1, November 11, 2016
+
 * Fix issue with partially retrieved data causing worker to crash
 * Version bump for dependencies
 
