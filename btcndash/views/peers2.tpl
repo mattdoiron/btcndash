@@ -54,7 +54,7 @@
                         <td class="center">{{peer['subver']}}</td>
                         <td class="center">{{peer['version']}}</td>
                         <td class="center">{{int(peer['services'])}}</td>
-                        <td class="center">{{'{:,.4f}'.format(peer['pingtime'])}}</td>
+                        <td class="center">{{'{:,.4f}'.format(peer.get('pingtime', 0))}}</td>
                     </tr>
                     % end
                 </tbody>
