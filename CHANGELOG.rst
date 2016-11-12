@@ -1,7 +1,15 @@
 Changes
 =======
 
+v2.3.2, November 11, 2016
+
+* Fix issues related to upgrade to new version of python-bitcoinlib
+* Add support for reporting NODE_WITNESS service bit
+* Add default value for pingtime because it's not always available
+* Fix conversion of service bit to int
+
 v2.3.1, November 11, 2016
+
 * Fix issue with partially retrieved data causing worker to crash
 * Version bump for dependencies
 

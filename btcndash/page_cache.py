@@ -26,7 +26,7 @@ import errno
 from socket import error as socket_error
 from bottle import template
 import bitcoin.rpc as rpc
-from bitcoin.rpc import JSONRPCException
+from bitcoin.rpc import JSONRPCError
 try:
     import urllib.request as urlrequest
 except ImportError:
@@ -133,7 +133,7 @@ class PageCache(object):
                     result = self.con.call(command_split[0], args)
                 else:
                     result = self.con.call(command_split[0])
-            except JSONRPCException as err:
+            except JSONRPCError as err:
                 self.log.error("Error ({}): {}".format(err.error['code'], err.error['message']))
                 self.log.error("Failed to retrieve data using command '{}'.".format(command))
                 return {}
@@ -187,6 +187,7 @@ class PageCache(object):
         NODE_NETWORK = (1 << 0)
         NODE_GETUTXO = (1 << 1)
         NODE_BLOOM = (1 << 2)
+        NODE_WITNESS = (1 << 3)
 
         # Convert type of input if necessary
         if isinstance(service_bits_in, int):
@@ -204,6 +205,8 @@ class PageCache(object):
             services.append("NODE_GETUTXO")
         if NODE_BLOOM == service_bits & NODE_BLOOM:
             services.append("NODE_BLOOM")
+        if NODE_WITNESS == service_bits & NODE_WITNESS:
+            services.append("NODE_WITNESS")
         if not services:
             services.append("NONE")
         services_offered = ', '.join(services)
