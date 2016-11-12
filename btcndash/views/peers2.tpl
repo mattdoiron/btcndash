@@ -53,7 +53,7 @@
                         <td class="center"><a href="{{data['ip_info_url'] + peer['addr'].partition(':')[0]}}">{{peer['addr']}}</a></td>
                         <td class="center">{{peer['subver']}}</td>
                         <td class="center">{{peer['version']}}</td>
-                        <td class="center">{{int(peer['services'])}}</td>
+                        <td class="center">{{int(peer['services'], 16)}}</td>
                         <td class="center">{{'{:,.4f}'.format(peer.get('pingtime', 0))}}</td>
                     </tr>
                     % end
