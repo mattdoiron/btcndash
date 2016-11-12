@@ -266,10 +266,18 @@ class PageCache(object):
 
             # Open the static file for each page and write the compiled template
             for page, page_info in pages.items():
-                path = os.path.join(APP_ROOT, 'static', 'html', page_info['static'])
-                data['title'] = page_info['title']
-                data['header_title'] = self.config['header_title']
-                with open(path, 'w') as static_page:
-                    self.log.debug('Writing static page cache for: {}'.format(page_info['static']))
-                    static_page.write(template(page_info['template'], data=data,
-                                               page_info=page_info, tiles=self.config['tiles']))
+                try:
+                    path = os.path.join(APP_ROOT, 'static', 'html', page_info['static'])
+                    data['title'] = page_info['title']
+                    data['header_title'] = self.config['header_title']
+                    with open(path, 'w') as static_page:
+                        self.log.debug('Writing static page cache for: {}'
+                                       .format(page_info['static']))
+                        static_page.write(template(page_info['template'], data=data,
+                                                   page_info=page_info,
+                                                   tiles=self.config['tiles']))
+                except KeyError as err:
+                    self.log.error('KeyError: Cannot find data: {}'.format(err))
+                    self.log.error('Some data was missing. Page {} will not be generated. Please '
+                                   'check error logs for more information.'
+                                   .format(data['title']))
