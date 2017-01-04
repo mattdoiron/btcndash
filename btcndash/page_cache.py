@@ -171,8 +171,12 @@ class PageCache(object):
         status_query = "nodes/{}/".format(ip)
         rank_url = self.config['bitnodes_url'] + rank_query
         status_url = self.config['bitnodes_url'] + status_query
-        rank = json.loads(urlrequest.urlopen(rank_url).read().decode('utf-8'))
-        status = json.loads(urlrequest.urlopen(status_url).read().decode('utf-8'))
+        try:
+            rank = json.loads(urlrequest.urlopen(rank_url).read().decode('utf-8'))
+            status = json.loads(urlrequest.urlopen(status_url).read().decode('utf-8'))
+        except (urlrequest.URLError, urlrequest.HTTPError) as err:
+            rank = 'n/a'
+            status = 'n/a'
         bitnodes_link = self.config['bitnodes_url'].replace('api/v1', 'nodes') + ip
         return {'status': status, 'rank': rank, 'bitnodes_link': bitnodes_link}
 
