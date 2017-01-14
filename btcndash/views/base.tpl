@@ -41,7 +41,7 @@
                     <p>
                         <a href="https://bitbucket.org/mattdoiron/btcndash">BTCnDash</a>
                         : Bitcoin Node Dashboard - Copyright 2014-2016<br/>
-                        Donate to: <a href='{{data['donate_url']}}'>{{data['donate_address']}}</a>
+                        Donate to: <a href='{{data['donate_url']}}{{data['donate_address']}}'>{{data['donate_address']}}</a>
                     </p>
                     % import time
                     % update_time = time.strftime("%Y-%m-%d %H:%M:%S")
