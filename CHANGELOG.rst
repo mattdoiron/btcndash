@@ -1,6 +1,12 @@
 Changes
 =======
 
+v2.3.3, April 9, 2017
+
+* Fix to catch some exceptions related to HTTP errors
+* Ensure that donate address is included in footer
+* Appears to work with Bitcoin Core v0.14 but some RPC calls have changed and have not been tested
+
 v2.3.2, November 11, 2016
 
 * Fix issues related to upgrade to new version of python-bitcoinlib

@@ -11,7 +11,11 @@ BTCnDash is meant to be lightweight, and with the assumption that there will be 
 to the dashboard. As such, it does not use a full webserver like Nginx or apache. It uses the
 Bottle_ microframework and generates static status pages on a schedule. Python's WSGI reference
 server is used as the actual webserver, but Bottle (and therefore BTCnDash) can be served by lots
-of different servers. Python 2.7 is required. 3.5 works, but is not as well tested!.
+of different servers. You could also simply serve the statics pages only.
+
+Python 2.7 is required. Python 3.5 works, but is not as well tested! Bitcoin Core v0.12 through
+v0.14 appear to work, but the latest v0.14 has not been thoroughly tested.
+
 
 .. _Bottle: http://bottlepy.org
 
