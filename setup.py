@@ -31,10 +31,10 @@ project = 'btcndash'
 packages = ['btcndash']
 requires = [
     "python-bitcoinlib==0.7.0",
-    "bottle==0.12.10"
+    "bottle==0.12.13"
 ]
 requires_extra = {
-    'doc': ["sphinx==1.4.8"]
+    'doc': ["sphinx==1.5.5"]
 }
 
 with open(os.path.join(project, '__init__.py'), 'r') as fd:
