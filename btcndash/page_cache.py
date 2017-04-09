@@ -67,7 +67,14 @@ class PageCache(object):
         # Refresh IP and location
         try:
             if 'detect' in [self.config['server_location'], self.config['server_ip_public']]:
-                loc = json.loads(urlrequest.urlopen(self.config['loc_url']).read().decode('utf-8'))
+                try:
+                    loc = json.loads(urlrequest.urlopen(self.config['loc_url']).read().decode('utf-8'))
+                except (urlrequest.URLError, urlrequest.HTTPError) as err:
+                    loc = {"as": "n/a", "city": "n/a", "country": "n/a", "countryCode": "n/a",
+                           "isp": "n/a", "lat": "n/a", "lon": "n/a", "org": "n/a", "query": "n/a",
+                           "region": "n/a", "regionName": "n/a", "status": "n/a",
+                           "timezone": "n/a", "zip": "n/a"}
+
             if self.config['server_location'] == 'detect':
                 self.log.debug('Detecting server location and IP address...')
                 self.location['server_location'] = ', '.join([loc['city'], loc['region'],
@@ -160,7 +167,10 @@ class PageCache(object):
 
         fee_url = self.config['fee_url'] + 'recommended'
         req = urlrequest.Request(fee_url, headers={'User-Agent': 'Mozilla/5.0'})
-        fees = json.loads(urlrequest.urlopen(req).read().decode('utf-8'))
+        try:
+            fees = json.loads(urlrequest.urlopen(req).read().decode('utf-8'))
+        except (urlrequest.URLError, urlrequest.HTTPError) as err:
+            fees = {"fastestFee": "n/a", "halfHourFee": "n/a", "hourFee": "n/a"}
         return fees
 
     def _get_bitnodes_data(self):
