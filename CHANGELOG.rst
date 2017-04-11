@@ -1,11 +1,13 @@
 Changes
 =======
 
-v2.3.3, April 9, 2017
+v2.3.3-5, April 10, 2017
 
 * Fix to catch some exceptions related to HTTP errors
 * Ensure that donate address is included in footer
 * Appears to work with Bitcoin Core v0.14 but some RPC calls have changed and have not been tested
+* Define default states for variables in case of banks or invalid responses.
+* Move documentation to Readthedocs
 
 v2.3.2, November 11, 2016
 
