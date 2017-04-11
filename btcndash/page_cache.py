@@ -167,10 +167,11 @@ class PageCache(object):
 
         fee_url = self.config['fee_url'] + 'recommended'
         req = urlrequest.Request(fee_url, headers={'User-Agent': 'Mozilla/5.0'})
+        fees = {"fastestFee": "n/a", "halfHourFee": "n/a", "hourFee": "n/a"}
         try:
-            fees = json.loads(urlrequest.urlopen(req).read().decode('utf-8'))
+            fees.update(json.loads(urlrequest.urlopen(req).read().decode('utf-8')))
         except (urlrequest.URLError, urlrequest.HTTPError) as err:
-            fees = {"fastestFee": "n/a", "halfHourFee": "n/a", "hourFee": "n/a"}
+            pass
         return fees
 
     def _get_bitnodes_data(self):
@@ -181,12 +182,16 @@ class PageCache(object):
         status_query = "nodes/{}/".format(ip)
         rank_url = self.config['bitnodes_url'] + rank_query
         status_url = self.config['bitnodes_url'] + status_query
+        rank = {"node": "n/a", "vi": "n/a", "si": "n/a", "hi": "n/a", "ai": "n/a", "pi": "n/a",
+                "dli": "n/a", "dui": "n/a", "wli": "n/a", "wui": "n/a", "mli": "n/a", "mui": "n/a",
+                "ni": "n/a", "bi": "n/a", "peer_index": "n/a", "rank": 0}
+        status = {"hostname": "n/a", "address": "n/a", "status": "n/a", "data": [],
+                  "bitcoin_address": "n/a", "url": "n/a", "verified": None}
         try:
-            rank = json.loads(urlrequest.urlopen(rank_url).read().decode('utf-8'))
-            status = json.loads(urlrequest.urlopen(status_url).read().decode('utf-8'))
+            rank.update(json.loads(urlrequest.urlopen(rank_url).read().decode('utf-8')))
+            status.update(json.loads(urlrequest.urlopen(status_url).read().decode('utf-8')))
         except (urlrequest.URLError, urlrequest.HTTPError) as err:
-            rank = 'n/a'
-            status = 'n/a'
+            pass
         bitnodes_link = self.config['bitnodes_url'].replace('api/v1', 'nodes') + ip
         return {'status': status, 'rank': rank, 'bitnodes_link': bitnodes_link}
 
