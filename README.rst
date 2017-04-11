@@ -43,4 +43,4 @@ Other Resources
 * Also see the `BTCnDash documentation`_.
 
 .. _`BTCnDash PyPi page`: https://pypi.python.org/pypi/btcndash/
-.. _`BTCnDash documentation`: https://pythonhosted.org/btcndash/
+.. _`BTCnDash documentation`: http://btcndash.readthedocs.io/
