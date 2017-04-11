@@ -185,7 +185,8 @@ class PageCache(object):
         rank = {"node": "n/a", "vi": "n/a", "si": "n/a", "hi": "n/a", "ai": "n/a", "pi": "n/a",
                 "dli": "n/a", "dui": "n/a", "wli": "n/a", "wui": "n/a", "mli": "n/a", "mui": "n/a",
                 "ni": "n/a", "bi": "n/a", "peer_index": "n/a", "rank": 0}
-        status = {"hostname": "n/a", "address": "n/a", "status": "n/a", "data": [],
+        status = {"hostname": "n/a", "address": "n/a", "status": "n/a",
+                  "data": [0, "n/a", 0, 0, 0, "n/a", "n/a", "n/a", 0,  0, "n/a", "n/a", "n/a"],
                   "bitcoin_address": "n/a", "url": "n/a", "verified": None}
         try:
             rank.update(json.loads(urlrequest.urlopen(rank_url).read().decode('utf-8')))
