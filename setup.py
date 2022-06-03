@@ -31,7 +31,7 @@ project = 'btcndash'
 packages = ['btcndash']
 requires = [
     "python-bitcoinlib==0.7.0",
-    "bottle==0.12.13"
+    "bottle==0.12.20"
 ]
 requires_extra = {
     'doc': ["sphinx==1.5.5"]
